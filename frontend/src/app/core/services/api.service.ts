@@ -12,7 +12,14 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = this.detectApiUrl();
+
+  private detectApiUrl(): string {
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      return 'https://bansiwala-bhojnalay.onrender.com/api';
+    }
+    return 'http://localhost:8080/api';
+  }
 
   constructor(private http: HttpClient) {}
 
