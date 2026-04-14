@@ -3,9 +3,15 @@
     <img class="logo-img" src="krishna-logo.png" alt="Krishna" />
     <span class="brand-name">Bansiwala Bhojnalay</span>
   </div>
-  <div class="navbar-links">
-    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/check-in" routerLinkActive="active">Check In</a>
-    <a routerLink="/students" routerLinkActive="active">Students</a>
-  </div>
+  @if (auth.isLoggedIn()) {
+    <div class="navbar-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
+      <a routerLink="/check-in" routerLinkActive="active">Check In</a>
+      @if (auth.isAdmin()) {
+        <a routerLink="/students" routerLinkActive="active">Students</a>
+      }
+      <span class="user-info">{{ auth.username() }} ({{ auth.role() }})</span>
+      <button class="btn btn-sm btn-outline logout-btn" (click)="logout()">Logout</button>
+    </div>
+  }
 </nav>

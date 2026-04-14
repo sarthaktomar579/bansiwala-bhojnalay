@@ -1,16 +1,13 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './features/dashboard/dashboard';
-import { CheckIn } from './features/check-in/check-in';
-import { Students } from './features/students/students';
-import { StudentForm } from './features/student-form/student-form';
-import { StudentReport } from './features/student-report/student-report';
+import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: Dashboard },
-  { path: 'check-in', component: CheckIn },
-  { path: 'students', component: Students },
-  { path: 'students/new', component: StudentForm },
-  { path: 'students/:id/edit', component: StudentForm },
-  { path: 'students/:id/report', component: StudentReport },
+  { path: 'login', loadComponent: () => import('./features/login/login').then(m => m.Login) },
+  { path: '', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard), canActivate: [authGuard] },
+  { path: 'check-in', loadComponent: () => import('./features/check-in/check-in').then(m => m.CheckIn), canActivate: [authGuard] },
+  { path: 'students', loadComponent: () => import('./features/students/students').then(m => m.Students), canActivate: [authGuard, adminGuard] },
+  { path: 'students/new', loadComponent: () => import('./features/student-form/student-form').then(m => m.StudentForm), canActivate: [authGuard, adminGuard] },
+  { path: 'students/:id/edit', loadComponent: () => import('./features/student-form/student-form').then(m => m.StudentForm), canActivate: [authGuard, adminGuard] },
+  { path: 'students/:id/report', loadComponent: () => import('./features/student-report/student-report').then(m => m.StudentReport), canActivate: [authGuard] },
+  { path: '**', redirectTo: '' },
 ];

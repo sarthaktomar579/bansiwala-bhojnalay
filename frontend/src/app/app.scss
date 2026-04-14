@@ -3,4 +3,9 @@
   margin: 0 auto;
   padding: 32px 20px;
   animation: fadeInUp 0.5s ease;
+
+  &.no-nav {
+    padding: 0;
+    max-width: 100%;
+  }
 }

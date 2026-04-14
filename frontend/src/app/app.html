@@ -1,4 +1,6 @@
-<app-navbar></app-navbar>
-<main class="main-content">
+@if (auth.isLoggedIn()) {
+  <app-navbar></app-navbar>
+}
+<main class="main-content" [class.no-nav]="!auth.isLoggedIn()">
   <router-outlet></router-outlet>
 </main>
