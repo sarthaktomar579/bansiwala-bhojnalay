@@ -1,0 +1,133 @@
+.check-in-card {
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.4s ease;
+}
+
+.scan-section {
+  text-align: center;
+  padding: 20px 0;
+
+  .scan-icon {
+    font-size: 80px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 20px rgba(230, 81, 0, 0.3));
+  }
+
+  .pulse-icon {
+    animation: pulse 2s infinite;
+  }
+
+  h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .help-text {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 28px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+}
+
+.form-group {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+}
+
+.btn-lg {
+  width: 100%;
+  max-width: 400px;
+  padding: 16px;
+  font-size: 16px;
+  margin-top: 8px;
+  border-radius: 12px;
+}
+
+.result-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 0.4s ease;
+
+  &.success {
+    background: rgba(46, 125, 50, 0.12);
+    border: 1px solid rgba(46, 125, 50, 0.3);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 40px rgba(46, 125, 50, 0.1);
+  }
+
+  .result-icon {
+    font-size: 56px;
+    filter: drop-shadow(0 0 15px rgba(46, 125, 50, 0.4));
+  }
+
+  .result-info {
+    flex: 1;
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .result-details {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+
+    .result-time {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .result-message {
+      font-size: 14px;
+      color: #81c784;
+      font-weight: 600;
+    }
+  }
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-light);
+  }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  float: right;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.6;
+  &:hover { opacity: 1; }
+}

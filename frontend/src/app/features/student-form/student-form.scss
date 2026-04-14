@@ -1,0 +1,66 @@
+.form-card {
+  max-width: 640px;
+  animation: fadeInUp 0.5s ease;
+}
+
+.fingerprint-section {
+  margin: 28px 0;
+  padding: 28px;
+  background: rgba(21, 101, 192, 0.06);
+  border-radius: 14px;
+  border: 2px dashed rgba(21, 101, 192, 0.25);
+  text-align: center;
+
+  h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+
+  .help-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+}
+
+.capture-btn {
+  padding: 16px 40px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.scan-animation {
+  animation: pulse 1s infinite;
+}
+
+.fp-preview {
+  margin-top: 16px;
+  padding: 14px;
+  background: rgba(46, 125, 50, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(46, 125, 50, 0.25);
+
+  .fp-status {
+    display: block;
+    font-weight: 700;
+    color: #81c784;
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+
+  code {
+    font-size: 11px;
+    color: var(--text-secondary);
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    display: block;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 28px;
+}

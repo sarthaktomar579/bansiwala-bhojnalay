@@ -1,0 +1,82 @@
+<div class="page-header">
+  <h1>Dashboard</h1>
+  <div class="header-actions">
+    <span class="today-date">{{ today }}</span>
+    <button class="btn btn-primary" routerLink="/check-in">New Check-In</button>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="loading">Loading dashboard...</div>
+} @else if (report(); as r) {
+  <div class="stats-grid">
+    <div class="stat-card breakfast">
+      <div class="stat-icon">🌅</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ r.breakfastCount }}</div>
+        <div class="stat-label">Breakfast</div>
+      </div>
+    </div>
+
+    <div class="stat-card lunch">
+      <div class="stat-icon">☀️</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ r.lunchCount }}</div>
+        <div class="stat-label">Lunch</div>
+      </div>
+    </div>
+
+    <div class="stat-card dinner">
+      <div class="stat-icon">🌙</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ r.dinnerCount }}</div>
+        <div class="stat-label">Dinner</div>
+      </div>
+    </div>
+
+    <div class="stat-card total">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ r.totalCheckIns }}</div>
+        <div class="stat-label">Total Today</div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (recentCheckIns().length > 0) {
+  <div class="card recent-section">
+    <h2>Recent Check-Ins</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Meal</th>
+            <th>Time</th>
+            <th>Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (record of recentCheckIns(); track record.recordId) {
+            <tr>
+              <td class="student-name">{{ record.studentName }}</td>
+              <td><span class="badge" [class]="record.mealType.toLowerCase()">{{ record.mealType }}</span></td>
+              <td>{{ formatTime(record.checkInTime) }}</td>
+              <td><span class="method-badge">{{ record.checkInMethod }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+@if (!loading() && recentCheckIns().length === 0) {
+  <div class="card empty-state">
+    <div class="empty-icon">🍽️</div>
+    <h3>No check-ins yet today</h3>
+    <p>Start scanning QR codes or fingerprints to record meals</p>
+    <button class="btn btn-primary" routerLink="/check-in">Start Check-In</button>
+  </div>
+}

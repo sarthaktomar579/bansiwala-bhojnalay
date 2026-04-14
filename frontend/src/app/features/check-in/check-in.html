@@ -1,0 +1,96 @@
+<div class="page-header">
+  <h1>👆 Fingerprint Check-In</h1>
+  <label class="toggle-label">
+    <input type="checkbox" [checked]="isDummyMode()" (change)="toggleDummyMode()" />
+    <span>Dummy Mode (No Sensor)</span>
+  </label>
+</div>
+
+<!-- Success Result -->
+@if (result(); as r) {
+  <div class="result-card success">
+    <div class="result-icon">✅</div>
+    <div class="result-info">
+      <h2>{{ r.studentName }}</h2>
+      <div class="result-details">
+        <span class="badge" [class]="r.mealType.toLowerCase()">{{ r.mealType }}</span>
+        <span class="result-time">{{ r.checkInTime | date:'shortTime' }}</span>
+      </div>
+      <p class="result-message">{{ r.message }}</p>
+    </div>
+    <button class="btn btn-outline" (click)="clearResult()">Next Student</button>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="alert alert-error">
+    {{ error() }}
+    <button class="close-btn" (click)="error.set('')">&times;</button>
+  </div>
+}
+
+<!-- Check-In Card -->
+@if (!result()) {
+  <div class="card check-in-card">
+
+    @if (isDummyMode()) {
+      <!-- DUMMY MODE: Select student to simulate scan -->
+      <div class="scan-section">
+        <div class="scan-icon">👆</div>
+        <h3>Simulate Fingerprint Scan</h3>
+        <p class="help-text">
+          Select a registered student below — this simulates the sensor
+          recognizing their thumb. With a real sensor, this step is automatic.
+        </p>
+
+        <div class="form-group">
+          <label>Student (simulating sensor match)</label>
+          <select [(ngModel)]="selectedStudentId">
+            <option value="">-- Place thumb on sensor --</option>
+            @for (s of students(); track s.id) {
+              <option [ngValue]="s.id">{{ s.name }} ({{ s.mobile }})</option>
+            }
+          </select>
+        </div>
+
+        @if (students().length === 0) {
+          <div class="alert alert-info">
+            No students with fingerprint registered. Go to Students → Add Student first.
+          </div>
+        }
+
+        <button
+          class="btn btn-success btn-lg"
+          (click)="scanAndCheckIn()"
+          [disabled]="processing() || students().length === 0">
+          @if (processing()) {
+            Verifying fingerprint...
+          } @else {
+            ✅ Confirm Check-In
+          }
+        </button>
+      </div>
+    } @else {
+      <!-- REAL MODE: Actual sensor capture -->
+      <div class="scan-section">
+        <div class="scan-icon pulse-icon">👆</div>
+        <h3>Place Thumb on Scanner</h3>
+        <p class="help-text">
+          Ask the student to place their thumb on the fingerprint device
+        </p>
+
+        <button
+          class="btn btn-success btn-lg"
+          (click)="scanAndCheckIn()"
+          [disabled]="processing()">
+          @if (processing()) {
+            Scanning...
+          } @else {
+            Scan & Check In
+          }
+        </button>
+      </div>
+    }
+  </div>
+}

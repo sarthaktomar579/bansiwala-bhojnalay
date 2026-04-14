@@ -1,0 +1,66 @@
+<div class="page-header">
+  <h1>
+    @if (history(); as h) {
+      {{ h.studentName }} — Meal Report
+    } @else {
+      Student Report
+    }
+  </h1>
+  <a class="btn btn-outline" routerLink="/students">Back to Students</a>
+</div>
+
+@if (loading()) {
+  <div class="loading">Loading report...</div>
+} @else if (history(); as h) {
+  <!-- Month Navigation -->
+  <div class="month-nav">
+    <button class="btn btn-sm btn-outline" (click)="prevMonth()">← Prev</button>
+    <h2>{{ monthLabel }}</h2>
+    <button class="btn btn-sm btn-outline" (click)="nextMonth()">Next →</button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card breakfast">
+      <div class="summary-value">{{ h.totalBreakfast }}</div>
+      <div class="summary-label">Breakfasts</div>
+    </div>
+    <div class="summary-card lunch">
+      <div class="summary-value">{{ h.totalLunch }}</div>
+      <div class="summary-label">Lunches</div>
+    </div>
+    <div class="summary-card dinner">
+      <div class="summary-value">{{ h.totalDinner }}</div>
+      <div class="summary-label">Dinners</div>
+    </div>
+    <div class="summary-card total">
+      <div class="summary-value">{{ h.totalBreakfast + h.totalLunch + h.totalDinner }}</div>
+      <div class="summary-label">Total Meals</div>
+    </div>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="card">
+    <div class="calendar-legend">
+      <span class="legend-item"><span class="dot breakfast-dot"></span> Breakfast</span>
+      <span class="legend-item"><span class="dot lunch-dot"></span> Lunch</span>
+      <span class="legend-item"><span class="dot dinner-dot"></span> Dinner</span>
+    </div>
+
+    <div class="calendar-grid">
+      @for (day of calendarDays; track day.day) {
+        <div class="calendar-cell" [class.has-meals]="day.breakfast || day.lunch || day.dinner">
+          <div class="cell-date">{{ day.day }}</div>
+          <div class="cell-meals">
+            @if (day.breakfast) { <span class="meal-dot breakfast-dot" title="Breakfast">B</span> }
+            @if (day.lunch) { <span class="meal-dot lunch-dot" title="Lunch">L</span> }
+            @if (day.dinner) { <span class="meal-dot dinner-dot" title="Dinner">D</span> }
+          </div>
+          @if (!day.breakfast && !day.lunch && !day.dinner) {
+            <div class="cell-empty">—</div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

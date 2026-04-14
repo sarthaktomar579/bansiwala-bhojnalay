@@ -1,0 +1,69 @@
+<div class="page-header">
+  <h1>{{ isEdit() ? 'Edit Student' : 'Register New Student' }}</h1>
+</div>
+
+@if (error()) {
+  <div class="alert alert-error">{{ error() }}</div>
+}
+@if (success()) {
+  <div class="alert alert-success">{{ success() }}</div>
+}
+
+<div class="card form-card">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" [(ngModel)]="form.name" name="name" placeholder="e.g. Rahul Sharma" required />
+    </div>
+
+    <div class="form-group">
+      <label>Mobile Number *</label>
+      <input type="tel" [(ngModel)]="form.mobile" name="mobile" placeholder="e.g. 9876543210" required maxlength="10" />
+    </div>
+
+    <div class="form-group">
+      <label>Email (optional)</label>
+      <input type="email" [(ngModel)]="form.email" name="email" placeholder="e.g. rahul&#64;email.com" />
+    </div>
+
+    <!-- Fingerprint Section -->
+    <div class="fingerprint-section">
+      <h3>👆 Fingerprint Registration *</h3>
+      <p class="help-text">
+        @if (fpService.isDummyMode()) {
+          Dummy mode is ON — click below to simulate fingerprint capture
+        } @else {
+          Place the student's thumb on the fingerprint scanner and click capture
+        }
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-accent capture-btn"
+        (click)="captureFingerprint()"
+        [disabled]="capturing()">
+        @if (capturing()) {
+          <span class="scan-animation">Scanning...</span>
+        } @else if (form.fingerprintTemplate) {
+          Re-capture Fingerprint
+        } @else {
+          Capture Fingerprint
+        }
+      </button>
+
+      @if (form.fingerprintTemplate) {
+        <div class="fp-preview">
+          <span class="fp-status">✅ Fingerprint Captured</span>
+          <code>{{ form.fingerprintTemplate }}</code>
+        </div>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline" (click)="router.navigate(['/students'])">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Saving...' : (isEdit() ? 'Update Student' : 'Register Student') }}
+      </button>
+    </div>
+  </form>
+</div>
