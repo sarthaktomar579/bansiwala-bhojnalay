@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
 import { StudentMealHistory, MealEntry } from '../../core/models/meal.model';
 
 @Component({
@@ -23,14 +24,23 @@ export class StudentReport implements OnInit {
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private route: ActivatedRoute
+  ) {
     const now = new Date();
     this.year = now.getFullYear();
     this.month = now.getMonth() + 1;
   }
 
   ngOnInit(): void {
-    this.studentId = +this.route.snapshot.paramMap.get('id')!;
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.studentId = +idParam;
+    } else if (this.auth.isStudent() && this.auth.studentId()) {
+      this.studentId = this.auth.studentId()!;
+    }
     this.loadReport();
   }
 

@@ -5,12 +5,14 @@
   </div>
   @if (auth.isLoggedIn()) {
     <div class="navbar-links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
-      <a routerLink="/check-in" routerLinkActive="active">Check In</a>
       @if (auth.isAdmin()) {
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
+        <a routerLink="/check-in" routerLinkActive="active">Check In</a>
         <a routerLink="/students" routerLinkActive="active">Students</a>
+      } @else {
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">My Report</a>
       }
-      <span class="user-info">{{ auth.username() }} ({{ auth.role() }})</span>
+      <span class="user-info">{{ auth.username() }}</span>
       <button class="btn btn-sm btn-outline logout-btn" (click)="logout()">Logout</button>
     </div>
   }

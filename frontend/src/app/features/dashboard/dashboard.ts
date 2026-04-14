@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
 import { DailyReport, CheckInResponse } from '../../core/models/meal.model';
 
 @Component({
@@ -18,9 +19,20 @@ export class Dashboard implements OnInit {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    if (this.auth.isStudent()) {
+      const sid = this.auth.studentId();
+      if (sid) {
+        this.router.navigate(['/students', sid, 'report']);
+      }
+      return;
+    }
     this.loadDashboard();
   }
 

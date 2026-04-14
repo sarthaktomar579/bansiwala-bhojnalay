@@ -3,7 +3,7 @@
     <div class="login-header">
       <img src="krishna-logo.png" alt="Bansiwala Bhojnalay" class="login-logo" />
       <h1>Bansiwala Bhojnalay</h1>
-      <p>Sign in to access meal tracker</p>
+      <p>{{ isSignUp() ? 'Create your account' : 'Sign in to access meal tracker' }}</p>
     </div>
 
     @if (error()) {
@@ -13,7 +13,7 @@
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label>Username</label>
-        <input type="text" [(ngModel)]="username" name="username" placeholder="Enter username" autofocus />
+        <input type="text" [(ngModel)]="username" name="username" placeholder="Choose a username" autofocus />
       </div>
 
       <div class="form-group">
@@ -21,9 +21,25 @@
         <input type="password" [(ngModel)]="password" name="password" placeholder="Enter password" />
       </div>
 
+      @if (isSignUp()) {
+        <div class="form-group">
+          <label>Registered Mobile Number</label>
+          <input type="tel" [(ngModel)]="mobile" name="mobile" placeholder="e.g. 9876543210" maxlength="10" />
+          <small class="help-text">Enter the mobile number admin used to register you</small>
+        </div>
+      }
+
       <button type="submit" class="btn btn-primary btn-full" [disabled]="loading()">
-        {{ loading() ? 'Signing in...' : 'Sign In' }}
+        {{ loading() ? (isSignUp() ? 'Creating account...' : 'Signing in...') : (isSignUp() ? 'Create Account' : 'Sign In') }}
       </button>
     </form>
+
+    <div class="toggle-mode">
+      @if (isSignUp()) {
+        Already have an account? <a (click)="toggleMode()">Sign In</a>
+      } @else {
+        Student? <a (click)="toggleMode()">Create Account</a>
+      }
+    </div>
   </div>
 </div>
