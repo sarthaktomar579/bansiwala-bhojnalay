@@ -80,9 +80,21 @@ public class MealRecordService {
     private CheckInResponse processCheckIn(Student student, MealType mealType, CheckInMethod method, int thaliCount) {
         LocalDate today = LocalDate.now();
 
-        if (mealRecordRepository.existsByStudentIdAndMealDateAndMealType(student.getId(), today, mealType)) {
-            throw new DuplicateCheckInException(
-                    student.getName() + " is already checked in for " + mealType + " today");
+        var existing = mealRecordRepository.findByStudentIdAndMealDateAndMealType(student.getId(), today, mealType);
+
+        if (existing.isPresent()) {
+            MealRecord record = existing.get();
+            int oldCount = record.getThaliCount();
+            int newCount = oldCount + thaliCount;
+            record.setThaliCount(newCount);
+            record = mealRecordRepository.save(record);
+
+            return new CheckInResponse(
+                    record.getId(), student.getId(), student.getName(),
+                    today, mealType, record.getCheckInTime(), method, newCount,
+                    student.getName() + " — added " + thaliCount + " more thali(s) for " + mealType
+                            + ". Total now: " + newCount + " thalis"
+            );
         }
 
         MealRecord record = new MealRecord();
