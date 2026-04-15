@@ -45,6 +45,7 @@ export class ScanCheckin implements OnInit {
       next: (res) => {
         this.result.set(res);
         this.processing.set(false);
+        this.announceCheckIn(res);
       },
       error: (err) => {
         this.error.set(err.error?.message || 'Check-in failed');
@@ -57,5 +58,28 @@ export class ScanCheckin implements OnInit {
     this.result.set(null);
     this.error.set('');
     this.thaliCount = 1;
+  }
+
+  private announceCheckIn(res: CheckInResponse): void {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.cancel();
+
+    const meal = res.mealType.toLowerCase();
+    let text: string;
+
+    if (res.thaliCount === 1) {
+      text = `Check-in done. ${res.studentName}, ${meal}.`;
+    } else {
+      text = `Check-in done. ${res.studentName}, ${res.thaliCount} thalis for ${meal}.`;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-IN';
+    utterance.rate = 0.9;
+    utterance.volume = 1.0;
+    utterance.pitch = 1.0;
+
+    window.speechSynthesis.speak(utterance);
   }
 }

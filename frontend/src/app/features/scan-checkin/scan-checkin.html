@@ -9,7 +9,9 @@
         <div class="result-meal">
           <span class="badge big-badge" [class]="r.mealType.toLowerCase()">{{ r.mealType }}</span>
         </div>
-        <div class="result-thali">{{ r.thaliCount }} Thali{{ r.thaliCount > 1 ? 's' : '' }}</div>
+        @if (r.thaliCount > 1) {
+          <div class="result-thali">{{ r.thaliCount }} Thalis</div>
+        }
         <div class="result-time">{{ r.checkInTime | date:'shortTime' }}</div>
         <p class="result-msg">{{ r.message }}</p>
       </div>
