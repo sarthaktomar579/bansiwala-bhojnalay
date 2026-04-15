@@ -91,9 +91,8 @@ public class MealRecordService {
 
             return new CheckInResponse(
                     record.getId(), student.getId(), student.getName(),
-                    today, mealType, record.getCheckInTime(), method, newCount,
-                    student.getName() + " — added " + thaliCount + " more thali(s) for " + mealType
-                            + ". Total now: " + newCount + " thalis"
+                    today, mealType, record.getCheckInTime(), method, thaliCount,
+                    "Added " + thaliCount + " thali(s). Today's total: " + newCount + " thalis for " + mealType
             );
         }
 
@@ -160,9 +159,9 @@ public class MealRecordService {
         return new StudentMealHistory(
                 student.getId(), student.getName(),
                 year, month, meals,
-                records.stream().filter(r -> r.getMealType() == MealType.BREAKFAST).count(),
-                records.stream().filter(r -> r.getMealType() == MealType.LUNCH).count(),
-                records.stream().filter(r -> r.getMealType() == MealType.DINNER).count()
+                records.stream().filter(r -> r.getMealType() == MealType.BREAKFAST).mapToInt(MealRecord::getThaliCount).sum(),
+                records.stream().filter(r -> r.getMealType() == MealType.LUNCH).mapToInt(MealRecord::getThaliCount).sum(),
+                records.stream().filter(r -> r.getMealType() == MealType.DINNER).mapToInt(MealRecord::getThaliCount).sum()
         );
     }
 
