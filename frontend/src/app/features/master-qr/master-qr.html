@@ -1,0 +1,43 @@
+<div class="page-header no-print">
+  <h1>Master QR Code</h1>
+  <button class="btn btn-primary" (click)="print()">🖨️ Print QR</button>
+</div>
+
+<div class="qr-page">
+  <div class="qr-card">
+    <div class="qr-header">
+      <img class="qr-logo" src="krishna-logo.png" alt="Krishna" />
+      <h2>Bansiwala Bhojnalay</h2>
+      <p class="qr-subtitle">Scan to Check-In for Meal</p>
+    </div>
+
+    @if (qrImageUrl()) {
+      <div class="qr-image-container">
+        <img [src]="qrImageUrl()" alt="Master QR Code" class="qr-image" />
+      </div>
+    }
+
+    <div class="qr-instructions">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span>Open camera & scan this QR</span>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <span>Login once (stays logged in)</span>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <span>Select thalis & check in!</span>
+      </div>
+    </div>
+
+    <div class="qr-footer">
+      <p>🙏 Jai Shree Krishna 🙏</p>
+    </div>
+  </div>
+
+  <div class="url-display no-print">
+    <p>Direct link: <a [href]="scanUrl" target="_blank">{{ scanUrl }}</a></p>
+  </div>
+</div>

@@ -27,10 +27,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isStudent()) {
-      const sid = this.auth.studentId();
-      if (sid) {
-        this.router.navigate(['/students', sid, 'report']);
-      }
+      this.router.navigate(['/scan']);
       return;
     }
     this.loadDashboard();

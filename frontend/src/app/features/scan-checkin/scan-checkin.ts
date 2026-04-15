@@ -2,54 +2,46 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
-import { Student } from '../../core/models/student.model';
+import { AuthService } from '../../core/services/auth.service';
 import { CheckInResponse } from '../../core/models/meal.model';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-check-in',
+  selector: 'app-scan-checkin',
   imports: [CommonModule, FormsModule],
-  templateUrl: './check-in.html',
-  styleUrl: './check-in.scss',
+  templateUrl: './scan-checkin.html',
+  styleUrl: './scan-checkin.scss',
 })
-export class CheckIn implements OnInit {
+export class ScanCheckin implements OnInit {
   result = signal<CheckInResponse | null>(null);
   error = signal<string>('');
   processing = signal(false);
-
-  students = signal<Student[]>([]);
-  selectedStudentId: number | null = null;
   thaliCount = 1;
+  studentName = '';
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadStudents();
-  }
-
-  loadStudents(): void {
-    this.api.getStudents(true).subscribe({
-      next: (s) => this.students.set(s),
-    });
-  }
-
-  clearResult(): void {
-    this.result.set(null);
-    this.error.set('');
-    this.selectedStudentId = null;
-    this.thaliCount = 1;
+    if (!this.auth.isStudent() || !this.auth.studentId()) {
+      this.router.navigate(['/']);
+      return;
+    }
+    this.studentName = this.auth.username();
   }
 
   checkIn(): void {
-    if (!this.selectedStudentId) {
-      this.error.set('Please select a student');
-      return;
-    }
+    const sid = this.auth.studentId();
+    if (!sid) return;
 
     this.processing.set(true);
     this.result.set(null);
     this.error.set('');
 
-    this.api.checkInManual(+this.selectedStudentId, undefined, this.thaliCount).subscribe({
+    this.api.checkInByScan(sid, this.thaliCount).subscribe({
       next: (res) => {
         this.result.set(res);
         this.processing.set(false);
@@ -59,5 +51,11 @@ export class CheckIn implements OnInit {
         this.processing.set(false);
       },
     });
+  }
+
+  reset(): void {
+    this.result.set(null);
+    this.error.set('');
+    this.thaliCount = 1;
   }
 }

@@ -35,6 +35,9 @@ public class MealRecord {
     @Column(name = "check_in_method", nullable = false, length = 20)
     private CheckInMethod checkInMethod;
 
+    @Column(name = "thali_count", nullable = false)
+    private int thaliCount = 1;
+
     public MealRecord() {}
 
     @PrePersist
@@ -60,4 +63,7 @@ public class MealRecord {
 
     public CheckInMethod getCheckInMethod() { return checkInMethod; }
     public void setCheckInMethod(CheckInMethod checkInMethod) { this.checkInMethod = checkInMethod; }
+
+    public int getThaliCount() { return thaliCount; }
+    public void setThaliCount(int thaliCount) { this.thaliCount = thaliCount; }
 }

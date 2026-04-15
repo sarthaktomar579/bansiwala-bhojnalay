@@ -41,19 +41,6 @@ export class ApiService {
     return this.http.put<Student>(`${this.baseUrl}/students/${id}`, req);
   }
 
-  getStudentQr(id: number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/students/${id}/qr`, {
-      responseType: 'blob',
-    });
-  }
-
-  registerFingerprint(id: number, template: string): Observable<Student> {
-    return this.http.patch<Student>(
-      `${this.baseUrl}/students/${id}/fingerprint`,
-      { fingerprintTemplate: template }
-    );
-  }
-
   deactivateStudent(id: number): Observable<void> {
     return this.http.patch<void>(
       `${this.baseUrl}/students/${id}/deactivate`,
@@ -69,25 +56,21 @@ export class ApiService {
   }
 
   // ─── Check-In ──────────────────────────────────────
-  checkInByQr(req: CheckInRequest): Observable<CheckInResponse> {
-    return this.http.post<CheckInResponse>(
-      `${this.baseUrl}/meals/check-in/qr`,
-      req
-    );
-  }
-
-  checkInByFingerprint(req: CheckInRequest): Observable<CheckInResponse> {
-    return this.http.post<CheckInResponse>(
-      `${this.baseUrl}/meals/check-in/fingerprint`,
-      req
-    );
-  }
-
-  checkInManual(studentId: number, mealType?: MealType): Observable<CheckInResponse> {
+  checkInManual(studentId: number, mealType?: MealType, thaliCount?: number): Observable<CheckInResponse> {
     let params = new HttpParams();
     if (mealType) params = params.set('mealType', mealType);
+    if (thaliCount && thaliCount > 1) params = params.set('thaliCount', thaliCount);
     return this.http.post<CheckInResponse>(
       `${this.baseUrl}/meals/check-in/manual/${studentId}`,
+      null,
+      { params }
+    );
+  }
+
+  checkInByScan(studentId: number, thaliCount: number): Observable<CheckInResponse> {
+    const params = new HttpParams().set('thaliCount', thaliCount);
+    return this.http.post<CheckInResponse>(
+      `${this.baseUrl}/meals/check-in/scan/${studentId}`,
       null,
       { params }
     );

@@ -14,22 +14,19 @@ import java.util.Date;
 public class JwtUtil {
 
     private final SecretKey key;
-    private final long expirationMs;
 
     public JwtUtil(
-            @Value("${jwt.secret:BansiwalaB0jnalaySecretKey2026IndoreMealTracker!}") String secret,
-            @Value("${jwt.expiration-ms:86400000}") long expirationMs) {
+            @Value("${jwt.secret:BansiwalaB0jnalaySecretKey2026IndoreMealTracker!}") String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationMs = expirationMs;
     }
 
     public String generateToken(String username, String role, Long studentId) {
+        // No expiration — user stays logged in until manual logout
         return Jwts.builder()
                 .subject(username)
                 .claim("role", role)
                 .claim("studentId", studentId)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key)
                 .compact();
     }

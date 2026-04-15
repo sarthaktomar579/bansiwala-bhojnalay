@@ -6,7 +6,9 @@
       Student Report
     }
   </h1>
-  <a class="btn btn-outline" routerLink="/students">Back to Students</a>
+  @if (auth.isAdmin()) {
+    <a class="btn btn-outline" routerLink="/students">Back to Students</a>
+  }
 </div>
 
 @if (loading()) {
@@ -52,9 +54,15 @@
         <div class="calendar-cell" [class.has-meals]="day.breakfast || day.lunch || day.dinner">
           <div class="cell-date">{{ day.day }}</div>
           <div class="cell-meals">
-            @if (day.breakfast) { <span class="meal-dot breakfast-dot" title="Breakfast">B</span> }
-            @if (day.lunch) { <span class="meal-dot lunch-dot" title="Lunch">L</span> }
-            @if (day.dinner) { <span class="meal-dot dinner-dot" title="Dinner">D</span> }
+            @if (day.breakfast) {
+              <span class="meal-dot breakfast-dot" title="Breakfast">B{{ day.breakfastThalis > 1 ? '×' + day.breakfastThalis : '' }}</span>
+            }
+            @if (day.lunch) {
+              <span class="meal-dot lunch-dot" title="Lunch">L{{ day.lunchThalis > 1 ? '×' + day.lunchThalis : '' }}</span>
+            }
+            @if (day.dinner) {
+              <span class="meal-dot dinner-dot" title="Dinner">D{{ day.dinnerThalis > 1 ? '×' + day.dinnerThalis : '' }}</span>
+            }
           </div>
           @if (!day.breakfast && !day.lunch && !day.dinner) {
             <div class="cell-empty">—</div>

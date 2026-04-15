@@ -6,6 +6,7 @@ export interface CheckInRequest {
   fingerprintTemplate?: string;
   mealType?: MealType;
   checkInMethod?: CheckInMethod;
+  thaliCount?: number;
 }
 
 export interface CheckInResponse {
@@ -16,6 +17,7 @@ export interface CheckInResponse {
   mealType: MealType;
   checkInTime: string;
   checkInMethod: CheckInMethod;
+  thaliCount: number;
   message?: string;
 }
 
@@ -25,6 +27,10 @@ export interface DailyReport {
   lunchCount: number;
   dinnerCount: number;
   totalCheckIns: number;
+  breakfastThalis: number;
+  lunchThalis: number;
+  dinnerThalis: number;
+  totalThalis: number;
 }
 
 export interface MealEntry {
@@ -32,6 +38,7 @@ export interface MealEntry {
   mealType: MealType;
   checkInTime: string;
   checkInMethod: CheckInMethod;
+  thaliCount: number;
 }
 
 export interface StudentMealHistory {

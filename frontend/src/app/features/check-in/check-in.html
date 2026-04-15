@@ -1,9 +1,5 @@
 <div class="page-header">
-  <h1>👆 Fingerprint Check-In</h1>
-  <label class="toggle-label">
-    <input type="checkbox" [checked]="isDummyMode()" (change)="toggleDummyMode()" />
-    <span>Dummy Mode (No Sensor)</span>
-  </label>
+  <h1>Manual Check-In</h1>
 </div>
 
 <!-- Success Result -->
@@ -14,6 +10,7 @@
       <h2>{{ r.studentName }}</h2>
       <div class="result-details">
         <span class="badge" [class]="r.mealType.toLowerCase()">{{ r.mealType }}</span>
+        <span class="thali-badge">{{ r.thaliCount }} Thali{{ r.thaliCount > 1 ? 's' : '' }}</span>
         <span class="result-time">{{ r.checkInTime | date:'shortTime' }}</span>
       </div>
       <p class="result-message">{{ r.message }}</p>
@@ -33,64 +30,50 @@
 <!-- Check-In Card -->
 @if (!result()) {
   <div class="card check-in-card">
+    <div class="scan-section">
+      <div class="scan-icon">🍽️</div>
+      <h3>Admin Manual Check-In</h3>
+      <p class="help-text">
+        Select a member and choose number of thalis (extra for guests)
+      </p>
 
-    @if (isDummyMode()) {
-      <!-- DUMMY MODE: Select student to simulate scan -->
-      <div class="scan-section">
-        <div class="scan-icon">👆</div>
-        <h3>Simulate Fingerprint Scan</h3>
-        <p class="help-text">
-          Select a registered student below — this simulates the sensor
-          recognizing their thumb. With a real sensor, this step is automatic.
-        </p>
+      <div class="form-group">
+        <label>Select Member</label>
+        <select [(ngModel)]="selectedStudentId">
+          <option [ngValue]="null">-- Select a member --</option>
+          @for (s of students(); track s.id) {
+            <option [ngValue]="s.id">{{ s.name }} ({{ s.mobile }})</option>
+          }
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label>Student (simulating sensor match)</label>
-          <select [(ngModel)]="selectedStudentId">
-            <option value="">-- Place thumb on sensor --</option>
-            @for (s of students(); track s.id) {
-              <option [ngValue]="s.id">{{ s.name }} ({{ s.mobile }})</option>
-            }
-          </select>
+      <div class="form-group">
+        <label>Number of Thalis</label>
+        <select [(ngModel)]="thaliCount">
+          <option [ngValue]="1">1 Thali (self)</option>
+          <option [ngValue]="2">2 Thalis (+ 1 guest)</option>
+          <option [ngValue]="3">3 Thalis (+ 2 guests)</option>
+          <option [ngValue]="4">4 Thalis (+ 3 guests)</option>
+          <option [ngValue]="5">5 Thalis (+ 4 guests)</option>
+        </select>
+      </div>
+
+      @if (students().length === 0) {
+        <div class="alert alert-info">
+          No active members. Go to Students → Add Student first.
         </div>
+      }
 
-        @if (students().length === 0) {
-          <div class="alert alert-info">
-            No students with fingerprint registered. Go to Students → Add Student first.
-          </div>
+      <button
+        class="btn btn-success btn-lg"
+        (click)="checkIn()"
+        [disabled]="processing() || students().length === 0">
+        @if (processing()) {
+          Processing...
+        } @else {
+          ✅ Check In
         }
-
-        <button
-          class="btn btn-success btn-lg"
-          (click)="scanAndCheckIn()"
-          [disabled]="processing() || students().length === 0">
-          @if (processing()) {
-            Verifying fingerprint...
-          } @else {
-            ✅ Confirm Check-In
-          }
-        </button>
-      </div>
-    } @else {
-      <!-- REAL MODE: Actual sensor capture -->
-      <div class="scan-section">
-        <div class="scan-icon pulse-icon">👆</div>
-        <h3>Place Thumb on Scanner</h3>
-        <p class="help-text">
-          Ask the student to place their thumb on the fingerprint device
-        </p>
-
-        <button
-          class="btn btn-success btn-lg"
-          (click)="scanAndCheckIn()"
-          [disabled]="processing()">
-          @if (processing()) {
-            Scanning...
-          } @else {
-            Scan & Check In
-          }
-        </button>
-      </div>
-    }
+      </button>
+    </div>
   </div>
 }

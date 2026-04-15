@@ -9,8 +9,10 @@
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
         <a routerLink="/check-in" routerLinkActive="active">Check In</a>
         <a routerLink="/students" routerLinkActive="active">Students</a>
+        <a routerLink="/master-qr" routerLinkActive="active">Master QR</a>
       } @else {
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">My Report</a>
+        <a routerLink="/scan" routerLinkActive="active">Check In</a>
+        <a routerLink="/my-report" routerLinkActive="active">My Report</a>
       }
       <span class="user-info">{{ auth.username() }}</span>
       <button class="btn btn-sm btn-outline logout-btn" (click)="logout()">Logout</button>

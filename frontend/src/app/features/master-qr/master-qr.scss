@@ -1,0 +1,135 @@
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.qr-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.qr-header {
+  margin-bottom: 24px;
+
+  .qr-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: 24px;
+    color: #1a1a2e;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .qr-subtitle {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
+}
+
+.qr-image-container {
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.qr-image {
+  width: 280px;
+  height: 280px;
+  display: block;
+}
+
+.qr-instructions {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e65100, #ff8f00);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.qr-footer {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+
+  p {
+    font-size: 16px;
+    color: #e65100;
+    font-weight: 700;
+  }
+}
+
+.url-display {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+
+  p {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  a {
+    color: var(--primary-light);
+    word-break: break-all;
+  }
+}
+
+// Print styles
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body, html {
+    background: #fff !important;
+  }
+
+  .qr-page {
+    padding: 0;
+  }
+
+  .qr-card {
+    box-shadow: none;
+    border: 2px solid #333;
+    max-width: 100%;
+  }
+}

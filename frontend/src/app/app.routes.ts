@@ -3,8 +3,10 @@ import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./features/login/login').then(m => m.Login) },
+  { path: 'scan', loadComponent: () => import('./features/scan-checkin/scan-checkin').then(m => m.ScanCheckin), canActivate: [authGuard] },
   { path: '', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard), canActivate: [authGuard] },
   { path: 'check-in', loadComponent: () => import('./features/check-in/check-in').then(m => m.CheckIn), canActivate: [authGuard, adminGuard] },
+  { path: 'master-qr', loadComponent: () => import('./features/master-qr/master-qr').then(m => m.MasterQr), canActivate: [authGuard, adminGuard] },
   { path: 'students', loadComponent: () => import('./features/students/students').then(m => m.Students), canActivate: [authGuard, adminGuard] },
   { path: 'students/new', loadComponent: () => import('./features/student-form/student-form').then(m => m.StudentForm), canActivate: [authGuard, adminGuard] },
   { path: 'students/:id/edit', loadComponent: () => import('./features/student-form/student-form').then(m => m.StudentForm), canActivate: [authGuard, adminGuard] },

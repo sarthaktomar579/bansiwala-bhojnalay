@@ -1,0 +1,68 @@
+<div class="scan-page">
+  <!-- Success -->
+  @if (result(); as r) {
+    <div class="scan-result success-result">
+      <div class="big-icon">✅</div>
+      <h1>Checked In!</h1>
+      <div class="result-body">
+        <div class="result-name">{{ r.studentName }}</div>
+        <div class="result-meal">
+          <span class="badge big-badge" [class]="r.mealType.toLowerCase()">{{ r.mealType }}</span>
+        </div>
+        <div class="result-thali">{{ r.thaliCount }} Thali{{ r.thaliCount > 1 ? 's' : '' }}</div>
+        <div class="result-time">{{ r.checkInTime | date:'shortTime' }}</div>
+        <p class="result-msg">{{ r.message }}</p>
+      </div>
+      <button class="btn btn-primary btn-full" (click)="reset()">Done</button>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="scan-result error-result">
+      <div class="big-icon">❌</div>
+      <h1>Oops!</h1>
+      <p class="error-msg">{{ error() }}</p>
+      <button class="btn btn-primary btn-full" (click)="reset()">Try Again</button>
+    </div>
+  }
+
+  <!-- Check-In Form -->
+  @if (!result() && !error()) {
+    <div class="scan-form">
+      <div class="welcome-section">
+        <div class="big-icon">🙏</div>
+        <h1>Jai Shree Krishna</h1>
+        <p class="welcome-name">Welcome, {{ studentName }}</p>
+      </div>
+
+      <div class="thali-section">
+        <label class="thali-label">How many thalis?</label>
+        <div class="thali-selector">
+          @for (n of [1, 2, 3, 4, 5]; track n) {
+            <button
+              class="thali-btn"
+              [class.active]="thaliCount === n"
+              (click)="thaliCount = n">
+              {{ n }}
+            </button>
+          }
+        </div>
+        @if (thaliCount > 1) {
+          <p class="guest-hint">1 for you + {{ thaliCount - 1 }} guest{{ thaliCount > 2 ? 's' : '' }}</p>
+        }
+      </div>
+
+      <button
+        class="btn btn-success btn-full btn-checkin"
+        (click)="checkIn()"
+        [disabled]="processing()">
+        @if (processing()) {
+          Checking in...
+        } @else {
+          ✅ Check In for Meal
+        }
+      </button>
+    </div>
+  }
+</div>

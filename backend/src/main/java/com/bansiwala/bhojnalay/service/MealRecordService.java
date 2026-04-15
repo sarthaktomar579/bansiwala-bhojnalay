@@ -42,7 +42,8 @@ public class MealRecordService {
                 .orElseThrow(() -> new StudentNotFoundException("Invalid QR code — no student found"));
 
         MealType mealType = (request.getMealType() != null) ? request.getMealType() : mealTimeService.detectCurrentMeal();
-        return processCheckIn(student, mealType, CheckInMethod.QR_SCAN);
+        int thalis = (request.getThaliCount() != null && request.getThaliCount() > 0) ? request.getThaliCount() : 1;
+        return processCheckIn(student, mealType, CheckInMethod.QR_SCAN, thalis);
     }
 
     @Transactional
@@ -51,21 +52,32 @@ public class MealRecordService {
                 .orElseThrow(() -> new StudentNotFoundException("Fingerprint not recognized — no matching student"));
 
         MealType mealType = (request.getMealType() != null) ? request.getMealType() : mealTimeService.detectCurrentMeal();
-        return processCheckIn(student, mealType, CheckInMethod.FINGERPRINT);
+        return processCheckIn(student, mealType, CheckInMethod.FINGERPRINT, 1);
     }
 
     @Transactional
-    public CheckInResponse checkInManual(Long studentId, MealType mealType) {
+    public CheckInResponse checkInManual(Long studentId, MealType mealType, Integer thaliCount) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with ID: " + studentId));
 
         if (mealType == null) {
             mealType = mealTimeService.detectCurrentMeal();
         }
-        return processCheckIn(student, mealType, CheckInMethod.MANUAL);
+        int thalis = (thaliCount != null && thaliCount > 0) ? thaliCount : 1;
+        return processCheckIn(student, mealType, CheckInMethod.MANUAL, thalis);
     }
 
-    private CheckInResponse processCheckIn(Student student, MealType mealType, CheckInMethod method) {
+    @Transactional
+    public CheckInResponse checkInByScan(Long studentId, int thaliCount) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with ID: " + studentId));
+
+        MealType mealType = mealTimeService.detectCurrentMeal();
+        int thalis = (thaliCount > 0) ? thaliCount : 1;
+        return processCheckIn(student, mealType, CheckInMethod.QR_SCAN, thalis);
+    }
+
+    private CheckInResponse processCheckIn(Student student, MealType mealType, CheckInMethod method, int thaliCount) {
         LocalDate today = LocalDate.now();
 
         if (mealRecordRepository.existsByStudentIdAndMealDateAndMealType(student.getId(), today, mealType)) {
@@ -79,18 +91,15 @@ public class MealRecordService {
         record.setMealType(mealType);
         record.setCheckInTime(LocalDateTime.now());
         record.setCheckInMethod(method);
+        record.setThaliCount(thaliCount);
 
         record = mealRecordRepository.save(record);
 
+        String thaliMsg = thaliCount > 1 ? " (" + thaliCount + " thalis)" : "";
         return new CheckInResponse(
-                record.getId(),
-                student.getId(),
-                student.getName(),
-                today,
-                mealType,
-                record.getCheckInTime(),
-                method,
-                student.getName() + " checked in for " + mealType + " successfully!"
+                record.getId(), student.getId(), student.getName(),
+                today, mealType, record.getCheckInTime(), method, thaliCount,
+                student.getName() + " checked in for " + mealType + thaliMsg + " successfully!"
         );
     }
 
@@ -99,7 +108,12 @@ public class MealRecordService {
         long lunch = mealRecordRepository.countByDateAndMealType(date, MealType.LUNCH);
         long dinner = mealRecordRepository.countByDateAndMealType(date, MealType.DINNER);
 
-        return new DailyReportResponse(date, breakfast, lunch, dinner, breakfast + lunch + dinner);
+        long bThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.BREAKFAST);
+        long lThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.LUNCH);
+        long dThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.DINNER);
+
+        return new DailyReportResponse(date, breakfast, lunch, dinner, breakfast + lunch + dinner,
+                bThalis, lThalis, dThalis, bThalis + lThalis + dThalis);
     }
 
     public List<CheckInResponse> getTodayRecords(MealType mealType) {
@@ -128,12 +142,11 @@ public class MealRecordService {
 
         List<StudentMealHistory.MealEntry> meals = records.stream()
                 .map(r -> new StudentMealHistory.MealEntry(
-                        r.getMealDate(), r.getMealType(), r.getCheckInTime(), r.getCheckInMethod()))
+                        r.getMealDate(), r.getMealType(), r.getCheckInTime(), r.getCheckInMethod(), r.getThaliCount()))
                 .toList();
 
         return new StudentMealHistory(
-                student.getId(),
-                student.getName(),
+                student.getId(), student.getName(),
                 year, month, meals,
                 records.stream().filter(r -> r.getMealType() == MealType.BREAKFAST).count(),
                 records.stream().filter(r -> r.getMealType() == MealType.LUNCH).count(),
@@ -143,14 +156,9 @@ public class MealRecordService {
 
     private CheckInResponse toCheckInResponse(MealRecord record) {
         return new CheckInResponse(
-                record.getId(),
-                record.getStudent().getId(),
-                record.getStudent().getName(),
-                record.getMealDate(),
-                record.getMealType(),
-                record.getCheckInTime(),
-                record.getCheckInMethod(),
-                null
+                record.getId(), record.getStudent().getId(), record.getStudent().getName(),
+                record.getMealDate(), record.getMealType(), record.getCheckInTime(),
+                record.getCheckInMethod(), record.getThaliCount(), null
         );
     }
 }

@@ -13,12 +13,14 @@ public class CheckInResponse {
     private MealType mealType;
     private LocalDateTime checkInTime;
     private CheckInMethod checkInMethod;
+    private int thaliCount;
     private String message;
 
     public CheckInResponse() {}
 
     public CheckInResponse(Long recordId, Long studentId, String studentName, LocalDate mealDate,
-                           MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod, String message) {
+                           MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod,
+                           int thaliCount, String message) {
         this.recordId = recordId;
         this.studentId = studentId;
         this.studentName = studentName;
@@ -26,6 +28,7 @@ public class CheckInResponse {
         this.mealType = mealType;
         this.checkInTime = checkInTime;
         this.checkInMethod = checkInMethod;
+        this.thaliCount = thaliCount;
         this.message = message;
     }
 
@@ -49,6 +52,9 @@ public class CheckInResponse {
 
     public CheckInMethod getCheckInMethod() { return checkInMethod; }
     public void setCheckInMethod(CheckInMethod checkInMethod) { this.checkInMethod = checkInMethod; }
+
+    public int getThaliCount() { return thaliCount; }
+    public void setThaliCount(int thaliCount) { this.thaliCount = thaliCount; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }

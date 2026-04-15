@@ -13,32 +13,36 @@
     <div class="stat-card breakfast">
       <div class="stat-icon">🌅</div>
       <div class="stat-info">
-        <div class="stat-value">{{ r.breakfastCount }}</div>
-        <div class="stat-label">Breakfast</div>
+        <div class="stat-value">{{ r.breakfastThalis }}</div>
+        <div class="stat-label">Breakfast Thalis</div>
+        <div class="stat-sub">{{ r.breakfastCount }} members</div>
       </div>
     </div>
 
     <div class="stat-card lunch">
       <div class="stat-icon">☀️</div>
       <div class="stat-info">
-        <div class="stat-value">{{ r.lunchCount }}</div>
-        <div class="stat-label">Lunch</div>
+        <div class="stat-value">{{ r.lunchThalis }}</div>
+        <div class="stat-label">Lunch Thalis</div>
+        <div class="stat-sub">{{ r.lunchCount }} members</div>
       </div>
     </div>
 
     <div class="stat-card dinner">
       <div class="stat-icon">🌙</div>
       <div class="stat-info">
-        <div class="stat-value">{{ r.dinnerCount }}</div>
-        <div class="stat-label">Dinner</div>
+        <div class="stat-value">{{ r.dinnerThalis }}</div>
+        <div class="stat-label">Dinner Thalis</div>
+        <div class="stat-sub">{{ r.dinnerCount }} members</div>
       </div>
     </div>
 
     <div class="stat-card total">
       <div class="stat-icon">📊</div>
       <div class="stat-info">
-        <div class="stat-value">{{ r.totalCheckIns }}</div>
-        <div class="stat-label">Total Today</div>
+        <div class="stat-value">{{ r.totalThalis }}</div>
+        <div class="stat-label">Total Thalis</div>
+        <div class="stat-sub">{{ r.totalCheckIns }} check-ins</div>
       </div>
     </div>
   </div>
@@ -53,6 +57,7 @@
           <tr>
             <th>Student</th>
             <th>Meal</th>
+            <th>Thalis</th>
             <th>Time</th>
             <th>Method</th>
           </tr>
@@ -62,6 +67,7 @@
             <tr>
               <td class="student-name">{{ record.studentName }}</td>
               <td><span class="badge" [class]="record.mealType.toLowerCase()">{{ record.mealType }}</span></td>
+              <td>{{ record.thaliCount }}</td>
               <td>{{ formatTime(record.checkInTime) }}</td>
               <td><span class="method-badge">{{ record.checkInMethod }}</span></td>
             </tr>
@@ -76,7 +82,7 @@
   <div class="card empty-state">
     <div class="empty-icon">🍽️</div>
     <h3>No check-ins yet today</h3>
-    <p>Start scanning QR codes or fingerprints to record meals</p>
+    <p>Use manual check-in or share the Master QR with members</p>
     <button class="btn btn-primary" routerLink="/check-in">Start Check-In</button>
   </div>
 }

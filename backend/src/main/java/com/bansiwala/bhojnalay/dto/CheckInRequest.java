@@ -20,4 +20,8 @@ public class CheckInRequest {
 
     public CheckInMethod getCheckInMethod() { return checkInMethod; }
     public void setCheckInMethod(CheckInMethod checkInMethod) { this.checkInMethod = checkInMethod; }
+
+    private Integer thaliCount;
+    public Integer getThaliCount() { return thaliCount; }
+    public void setThaliCount(Integer thaliCount) { this.thaliCount = thaliCount; }
 }

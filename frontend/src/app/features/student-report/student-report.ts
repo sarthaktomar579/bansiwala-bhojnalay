@@ -26,7 +26,7 @@ export class StudentReport implements OnInit {
 
   constructor(
     private api: ApiService,
-    private auth: AuthService,
+    public auth: AuthService,
     private route: ActivatedRoute
   ) {
     const now = new Date();
@@ -74,24 +74,28 @@ export class StudentReport implements OnInit {
 
   private buildCalendar(meals: MealEntry[]): void {
     const daysInMonth = new Date(this.year, this.month, 0).getDate();
-    const mealsByDate: Record<string, Set<string>> = {};
+    const mealsByDate: Record<string, { types: Set<string>; thalis: Record<string, number> }> = {};
 
     for (const m of meals) {
-      const day = m.date;
-      if (!mealsByDate[day]) mealsByDate[day] = new Set();
-      mealsByDate[day].add(m.mealType);
+      if (!mealsByDate[m.date]) mealsByDate[m.date] = { types: new Set(), thalis: {} };
+      mealsByDate[m.date].types.add(m.mealType);
+      mealsByDate[m.date].thalis[m.mealType] = m.thaliCount;
     }
 
     this.calendarDays = [];
     for (let d = 1; d <= daysInMonth; d++) {
       const dateStr = `${this.year}-${String(this.month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const dayMeals = mealsByDate[dateStr] || new Set();
+      const dayData = mealsByDate[dateStr];
+      const dayMeals = dayData?.types || new Set();
       this.calendarDays.push({
         day: d,
         date: dateStr,
         breakfast: dayMeals.has('BREAKFAST'),
         lunch: dayMeals.has('LUNCH'),
         dinner: dayMeals.has('DINNER'),
+        breakfastThalis: dayData?.thalis['BREAKFAST'] || 0,
+        lunchThalis: dayData?.thalis['LUNCH'] || 0,
+        dinnerThalis: dayData?.thalis['DINNER'] || 0,
       });
     }
   }
@@ -103,4 +107,7 @@ interface CalendarDay {
   breakfast: boolean;
   lunch: boolean;
   dinner: boolean;
+  breakfastThalis: number;
+  lunchThalis: number;
+  dinnerThalis: number;
 }

@@ -33,8 +33,18 @@ public class MealCheckInController {
     @PostMapping("/check-in/manual/{studentId}")
     public ResponseEntity<CheckInResponse> checkInManual(
             @PathVariable Long studentId,
-            @RequestParam(required = false) MealType mealType) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(mealRecordService.checkInManual(studentId, mealType));
+            @RequestParam(required = false) MealType mealType,
+            @RequestParam(required = false) Integer thaliCount) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mealRecordService.checkInManual(studentId, mealType, thaliCount));
+    }
+
+    @PostMapping("/check-in/scan/{studentId}")
+    public ResponseEntity<CheckInResponse> checkInByScan(
+            @PathVariable Long studentId,
+            @RequestParam(defaultValue = "1") int thaliCount) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mealRecordService.checkInByScan(studentId, thaliCount));
     }
 
     @GetMapping("/today")

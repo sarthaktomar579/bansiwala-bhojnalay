@@ -59,14 +59,16 @@ public class StudentMealHistory {
         private MealType mealType;
         private LocalDateTime checkInTime;
         private CheckInMethod checkInMethod;
+        private int thaliCount;
 
         public MealEntry() {}
 
-        public MealEntry(LocalDate date, MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod) {
+        public MealEntry(LocalDate date, MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod, int thaliCount) {
             this.date = date;
             this.mealType = mealType;
             this.checkInTime = checkInTime;
             this.checkInMethod = checkInMethod;
+            this.thaliCount = thaliCount;
         }
 
         public LocalDate getDate() { return date; }
@@ -80,5 +82,8 @@ public class StudentMealHistory {
 
         public CheckInMethod getCheckInMethod() { return checkInMethod; }
         public void setCheckInMethod(CheckInMethod checkInMethod) { this.checkInMethod = checkInMethod; }
+
+        public int getThaliCount() { return thaliCount; }
+        public void setThaliCount(int thaliCount) { this.thaliCount = thaliCount; }
     }
 }

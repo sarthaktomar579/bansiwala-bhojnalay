@@ -8,15 +8,24 @@ public class DailyReportResponse {
     private long lunchCount;
     private long dinnerCount;
     private long totalCheckIns;
+    private long breakfastThalis;
+    private long lunchThalis;
+    private long dinnerThalis;
+    private long totalThalis;
 
     public DailyReportResponse() {}
 
-    public DailyReportResponse(LocalDate date, long breakfastCount, long lunchCount, long dinnerCount, long totalCheckIns) {
+    public DailyReportResponse(LocalDate date, long breakfastCount, long lunchCount, long dinnerCount,
+                               long totalCheckIns, long breakfastThalis, long lunchThalis, long dinnerThalis, long totalThalis) {
         this.date = date;
         this.breakfastCount = breakfastCount;
         this.lunchCount = lunchCount;
         this.dinnerCount = dinnerCount;
         this.totalCheckIns = totalCheckIns;
+        this.breakfastThalis = breakfastThalis;
+        this.lunchThalis = lunchThalis;
+        this.dinnerThalis = dinnerThalis;
+        this.totalThalis = totalThalis;
     }
 
     public LocalDate getDate() { return date; }
@@ -33,4 +42,16 @@ public class DailyReportResponse {
 
     public long getTotalCheckIns() { return totalCheckIns; }
     public void setTotalCheckIns(long totalCheckIns) { this.totalCheckIns = totalCheckIns; }
+
+    public long getBreakfastThalis() { return breakfastThalis; }
+    public void setBreakfastThalis(long breakfastThalis) { this.breakfastThalis = breakfastThalis; }
+
+    public long getLunchThalis() { return lunchThalis; }
+    public void setLunchThalis(long lunchThalis) { this.lunchThalis = lunchThalis; }
+
+    public long getDinnerThalis() { return dinnerThalis; }
+    public void setDinnerThalis(long dinnerThalis) { this.dinnerThalis = dinnerThalis; }
+
+    public long getTotalThalis() { return totalThalis; }
+    public void setTotalThalis(long totalThalis) { this.totalThalis = totalThalis; }
 }

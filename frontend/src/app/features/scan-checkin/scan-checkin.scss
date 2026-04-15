@@ -1,0 +1,182 @@
+.scan-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.scan-form,
+.scan-result {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  animation: fadeInUp 0.4s ease;
+}
+
+.welcome-section {
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 28px;
+    color: #fff;
+    margin: 12px 0 8px;
+    font-weight: 800;
+  }
+
+  .welcome-name {
+    font-size: 18px;
+    color: var(--primary-light);
+    font-weight: 600;
+  }
+}
+
+.big-icon {
+  font-size: 72px;
+  filter: drop-shadow(0 0 20px rgba(230, 81, 0, 0.3));
+}
+
+.thali-section {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.thali-label {
+  display: block;
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.thali-selector {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.thali-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary-light);
+    background: rgba(230, 81, 0, 0.1);
+  }
+
+  &.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(230, 81, 0, 0.4);
+    transform: scale(1.1);
+  }
+}
+
+.guest-hint {
+  margin-top: 12px;
+  color: var(--primary-light);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+}
+
+.btn-checkin {
+  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+// Result styles
+.scan-result {
+  h1 {
+    font-size: 32px;
+    color: #fff;
+    margin: 16px 0;
+    font-weight: 800;
+  }
+}
+
+.success-result {
+  .result-body {
+    background: rgba(46, 125, 50, 0.12);
+    border: 1px solid rgba(46, 125, 50, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+  }
+
+  .result-name {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .result-meal {
+    margin-bottom: 8px;
+  }
+
+  .big-badge {
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 20px;
+  }
+
+  .result-thali {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-light);
+    margin: 12px 0;
+  }
+
+  .result-time {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .result-msg {
+    font-size: 14px;
+    color: #81c784;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+}
+
+.error-result {
+  .error-msg {
+    font-size: 16px;
+    color: #ef9a9a;
+    margin: 16px 0 24px;
+    line-height: 1.5;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
