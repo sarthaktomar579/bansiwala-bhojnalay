@@ -65,14 +65,8 @@ export class ScanCheckin implements OnInit {
 
     window.speechSynthesis.cancel();
 
-    const meal = res.mealType.toLowerCase();
-    let text: string;
-
-    if (res.thaliCount === 1) {
-      text = `Check-in done. ${res.studentName}, ${meal}.`;
-    } else {
-      text = `Check-in done. ${res.studentName}, ${res.thaliCount} thalis for ${meal}.`;
-    }
+    const count = this.thaliCount;
+    const text = `Check-in done for ${count} thali by ${res.studentName}. Jai Shree Krishna.`;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-IN';
