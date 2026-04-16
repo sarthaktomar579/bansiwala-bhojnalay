@@ -84,10 +84,10 @@ export class ApiService {
     });
   }
 
-  clearPaymentDue(studentId: number): Observable<Student> {
+  clearPaymentDue(studentId: number, monthlyThalis: number): Observable<Student> {
     return this.http.patch<Student>(
       `${this.baseUrl}/students/${studentId}/clear-due`,
-      {}
+      { monthlyThalis }
     );
   }
 

@@ -7,7 +7,7 @@ export interface Student {
   hasFingerprintRegistered: boolean;
   isActive: boolean;
   amountPaid: number;
-  paymentCleared: boolean;
+  thalisCleared: number;
   createdAt: string;
 }
 

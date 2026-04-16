@@ -151,38 +151,57 @@
     right: 0;
     bottom: 0;
     flex-direction: column;
-    background: rgba(15, 15, 26, 0.97);
-    backdrop-filter: blur(30px);
-    padding: 24px;
-    gap: 8px;
+    background: #0f0f1a;
+    padding: 20px 16px;
+    gap: 6px;
     align-items: stretch;
-    z-index: 99;
-    animation: fadeInUp 0.25s ease;
+    z-index: 999;
+    overflow-y: auto;
 
     &.show {
       display: flex;
     }
 
     a {
-      padding: 14px 20px;
-      font-size: 16px;
+      padding: 16px 20px;
+      font-size: 17px;
+      font-weight: 700;
       text-align: center;
       border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #ddd;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      &.active {
+        background: rgba(230, 81, 0, 0.15);
+        color: var(--primary-light);
+        border-color: rgba(230, 81, 0, 0.3);
+      }
 
       &.active::after { display: none; }
     }
 
     .user-info {
-      margin: 8px 0 0;
+      margin: 12px 0 0;
       text-align: center;
-      padding: 10px;
+      padding: 12px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
     }
 
     .logout-btn {
       margin: 8px 0 0;
-      padding: 12px;
-      font-size: 14px;
+      padding: 14px;
+      font-size: 15px;
       width: 100%;
+      text-align: center;
+      justify-content: center;
     }
   }
 }

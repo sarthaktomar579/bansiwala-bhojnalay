@@ -91,9 +91,10 @@ public class StudentService {
     }
 
     @Transactional
-    public StudentResponse clearPaymentDue(Long id) {
+    public StudentResponse clearPaymentDue(Long id, int currentMonthlyThalis) {
         Student student = findStudentOrThrow(id);
-        student.setPaymentCleared(true);
+        int cleared = (currentMonthlyThalis / 30) * 30;
+        student.setThalisCleared(cleared);
         student = studentRepository.save(student);
         return StudentResponse.from(student);
     }

@@ -80,8 +80,14 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}/clear-due")
-    public ResponseEntity<StudentResponse> clearPaymentDue(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.clearPaymentDue(id));
+    public ResponseEntity<StudentResponse> clearPaymentDue(
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, Object> body) {
+        int monthlyThalis = 0;
+        if (body != null && body.containsKey("monthlyThalis")) {
+            monthlyThalis = Integer.parseInt(body.get("monthlyThalis").toString());
+        }
+        return ResponseEntity.ok(studentService.clearPaymentDue(id, monthlyThalis));
     }
 
     @PatchMapping("/{id}/deactivate")

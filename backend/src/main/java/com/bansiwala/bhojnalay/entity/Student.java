@@ -33,8 +33,8 @@ public class Student {
     @Column(name = "amount_paid", nullable = false)
     private double amountPaid = 0;
 
-    @Column(name = "payment_cleared", nullable = false)
-    private boolean paymentCleared = false;
+    @Column(name = "thalis_cleared", nullable = false)
+    private int thalisCleared = 0;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -83,8 +83,8 @@ public class Student {
     public double getAmountPaid() { return amountPaid; }
     public void setAmountPaid(double amountPaid) { this.amountPaid = amountPaid; }
 
-    public boolean isPaymentCleared() { return paymentCleared; }
-    public void setPaymentCleared(boolean paymentCleared) { this.paymentCleared = paymentCleared; }
+    public int getThalisCleared() { return thalisCleared; }
+    public void setThalisCleared(int thalisCleared) { this.thalisCleared = thalisCleared; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

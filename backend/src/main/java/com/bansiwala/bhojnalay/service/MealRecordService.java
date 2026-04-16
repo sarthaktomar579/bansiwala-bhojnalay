@@ -88,6 +88,7 @@ public class MealRecordService {
             int oldCount = record.getThaliCount();
             int newCount = oldCount + thaliCount;
             record.setThaliCount(newCount);
+            record.setCheckInTime(LocalDateTime.now());
             record = mealRecordRepository.save(record);
 
             return new CheckInResponse(
@@ -182,7 +183,7 @@ public class MealRecordService {
             entry.put("mobile", s.getMobile());
             entry.put("monthlyThalis", totalThalis);
             entry.put("amountPaid", s.getAmountPaid());
-            entry.put("paymentDue", totalThalis >= 30 && !s.isPaymentCleared());
+            entry.put("paymentDue", totalThalis >= s.getThalisCleared() + 30);
             result.add(entry);
         }
         return result;

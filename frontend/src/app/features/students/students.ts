@@ -38,12 +38,19 @@ export class Students implements OnInit {
     });
   }
 
+  dueData = signal<Map<number, number>>(new Map());
+
   loadDueMembers(): void {
     this.api.getPaymentDueMembers().subscribe({
       next: (data) => {
         const ids = new Set<number>();
-        data.filter((m: any) => m.paymentDue).forEach((m: any) => ids.add(m.studentId));
+        const dataMap = new Map<number, number>();
+        data.forEach((m: any) => {
+          dataMap.set(m.studentId, m.monthlyThalis);
+          if (m.paymentDue) ids.add(m.studentId);
+        });
         this.dueIds.set(ids);
+        this.dueData.set(dataMap);
       },
     });
   }
@@ -87,7 +94,8 @@ export class Students implements OnInit {
     const name = student?.name || 'this member';
     if (!confirm(`Clear payment due for "${name}"? This will move them back to the normal list.`)) return;
 
-    this.api.clearPaymentDue(studentId).subscribe({
+    const monthlyThalis = this.dueData().get(studentId) || 0;
+    this.api.clearPaymentDue(studentId, monthlyThalis).subscribe({
       next: () => {
         this.loadStudents();
         this.loadDueMembers();
