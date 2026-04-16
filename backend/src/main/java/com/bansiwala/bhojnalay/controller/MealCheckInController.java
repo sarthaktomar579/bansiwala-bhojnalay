@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/meals")
@@ -45,6 +46,14 @@ public class MealCheckInController {
             @RequestParam(defaultValue = "1") int thaliCount) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mealRecordService.checkInByScan(studentId, thaliCount));
+    }
+
+    @PatchMapping("/records/{recordId}/thalis")
+    public ResponseEntity<Map<String, Object>> updateThaliCount(
+            @PathVariable Long recordId,
+            @RequestBody Map<String, Integer> body) {
+        int newCount = body.getOrDefault("thaliCount", 1);
+        return ResponseEntity.ok(mealRecordService.updateMealRecordThalis(recordId, newCount));
     }
 
     @GetMapping("/today")

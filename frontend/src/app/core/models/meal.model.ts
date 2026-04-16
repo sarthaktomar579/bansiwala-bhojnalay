@@ -34,6 +34,7 @@ export interface DailyReport {
 }
 
 export interface MealEntry {
+  recordId: number;
   date: string;
   mealType: MealType;
   checkInTime: string;

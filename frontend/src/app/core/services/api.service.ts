@@ -95,6 +95,13 @@ export class ApiService {
     return this.http.get<any[]>(`${this.baseUrl}/reports/payment-due`);
   }
 
+  updateMealThalis(recordId: number, thaliCount: number): Observable<any> {
+    return this.http.patch<any>(
+      `${this.baseUrl}/meals/records/${recordId}/thalis`,
+      { thaliCount }
+    );
+  }
+
   // ─── Reports ──────────────────────────────────────
   getDailyReport(date?: string): Observable<DailyReport> {
     let params = new HttpParams();

@@ -55,6 +55,7 @@ public class StudentMealHistory {
     public void setTotalDinner(long totalDinner) { this.totalDinner = totalDinner; }
 
     public static class MealEntry {
+        private Long recordId;
         private LocalDate date;
         private MealType mealType;
         private LocalDateTime checkInTime;
@@ -63,13 +64,17 @@ public class StudentMealHistory {
 
         public MealEntry() {}
 
-        public MealEntry(LocalDate date, MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod, int thaliCount) {
+        public MealEntry(Long recordId, LocalDate date, MealType mealType, LocalDateTime checkInTime, CheckInMethod checkInMethod, int thaliCount) {
+            this.recordId = recordId;
             this.date = date;
             this.mealType = mealType;
             this.checkInTime = checkInTime;
             this.checkInMethod = checkInMethod;
             this.thaliCount = thaliCount;
         }
+
+        public Long getRecordId() { return recordId; }
+        public void setRecordId(Long recordId) { this.recordId = recordId; }
 
         public LocalDate getDate() { return date; }
         public void setDate(LocalDate date) { this.date = date; }

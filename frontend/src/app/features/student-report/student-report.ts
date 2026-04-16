@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -7,7 +8,7 @@ import { StudentMealHistory, MealEntry } from '../../core/models/meal.model';
 
 @Component({
   selector: 'app-student-report',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './student-report.html',
   styleUrl: './student-report.scss',
 })
@@ -19,6 +20,8 @@ export class StudentReport implements OnInit {
   loading = signal(true);
   calendarDays: CalendarDay[] = [];
   amountPaid: number | null = null;
+  editingRecordId: number | null = null;
+  editThaliCount = 1;
 
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -78,6 +81,25 @@ export class StudentReport implements OnInit {
 
   get monthLabel(): string {
     return `${this.monthNames[this.month - 1]} ${this.year}`;
+  }
+
+  startEdit(meal: MealEntry): void {
+    this.editingRecordId = meal.recordId;
+    this.editThaliCount = meal.thaliCount;
+  }
+
+  cancelEdit(): void {
+    this.editingRecordId = null;
+  }
+
+  saveThaliEdit(meal: MealEntry): void {
+    if (this.editingRecordId === null || this.editThaliCount < 0) return;
+    this.api.updateMealThalis(this.editingRecordId, this.editThaliCount).subscribe({
+      next: () => {
+        this.editingRecordId = null;
+        this.loadReport();
+      },
+    });
   }
 
   private buildCalendar(meals: MealEntry[]): void {

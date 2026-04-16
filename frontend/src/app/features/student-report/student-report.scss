@@ -100,6 +100,47 @@
   }
 }
 
+.records-section {
+  margin-bottom: 24px;
+  animation: fadeInUp 0.5s ease 0.3s backwards;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+}
+
+.thali-input {
+  width: 60px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-align: center;
+  outline: none;
+
+  &:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(230, 81, 0, 0.15);
+  }
+}
+
+.method-badge {
+  font-size: 10px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .calendar-legend {
   display: flex;
   gap: 24px;

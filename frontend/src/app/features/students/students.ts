@@ -13,7 +13,7 @@ import { Student } from '../../core/models/student.model';
 })
 export class Students implements OnInit {
   students = signal<Student[]>([]);
-  paymentDue = signal<any[]>([]);
+  memberThalis = signal<any[]>([]);
   loading = signal(true);
   paymentStudent = signal<Student | null>(null);
   paymentAmount = 0;
@@ -23,7 +23,7 @@ export class Students implements OnInit {
 
   ngOnInit(): void {
     this.loadStudents();
-    this.loadPaymentDue();
+    this.loadMemberThalis();
   }
 
   loadStudents(): void {
@@ -37,9 +37,9 @@ export class Students implements OnInit {
     });
   }
 
-  loadPaymentDue(): void {
+  loadMemberThalis(): void {
     this.api.getPaymentDueMembers().subscribe({
-      next: (data) => this.paymentDue.set(data),
+      next: (data) => this.memberThalis.set(data),
     });
   }
 
@@ -80,7 +80,7 @@ export class Students implements OnInit {
       next: () => {
         this.closePayment();
         this.loadStudents();
-        this.loadPaymentDue();
+        this.loadMemberThalis();
       },
     });
   }

@@ -50,6 +50,17 @@
   border: 1px solid rgba(255, 152, 0, 0.3);
 }
 
+.due-row {
+  background: rgba(255, 152, 0, 0.06) !important;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
 .student-name {
   font-weight: 700;
   color: #fff;

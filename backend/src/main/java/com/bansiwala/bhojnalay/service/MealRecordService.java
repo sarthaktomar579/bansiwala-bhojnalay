@@ -154,7 +154,7 @@ public class MealRecordService {
 
         List<StudentMealHistory.MealEntry> meals = records.stream()
                 .map(r -> new StudentMealHistory.MealEntry(
-                        r.getMealDate(), r.getMealType(), r.getCheckInTime(), r.getCheckInMethod(), r.getThaliCount()))
+                        r.getId(), r.getMealDate(), r.getMealType(), r.getCheckInTime(), r.getCheckInMethod(), r.getThaliCount()))
                 .toList();
 
         return new StudentMealHistory(
@@ -173,23 +173,37 @@ public class MealRecordService {
         LocalDate end = ym.atEndOfMonth();
 
         List<Student> allActive = studentRepository.findByIsActiveTrue();
-        List<Map<String, Object>> dueList = new java.util.ArrayList<>();
+        List<Map<String, Object>> result = new java.util.ArrayList<>();
 
         for (Student s : allActive) {
             List<MealRecord> records = mealRecordRepository
                     .findByStudentIdAndMealDateBetweenOrderByMealDateAscMealTypeAsc(s.getId(), start, end);
             int totalThalis = records.stream().mapToInt(MealRecord::getThaliCount).sum();
-            if (totalThalis >= 30) {
-                dueList.add(Map.of(
-                        "studentId", s.getId(),
-                        "name", s.getName(),
-                        "mobile", s.getMobile(),
-                        "monthlyThalis", totalThalis,
-                        "amountPaid", s.getAmountPaid()
-                ));
-            }
+            java.util.Map<String, Object> entry = new java.util.HashMap<>();
+            entry.put("studentId", s.getId());
+            entry.put("name", s.getName());
+            entry.put("mobile", s.getMobile());
+            entry.put("monthlyThalis", totalThalis);
+            entry.put("amountPaid", s.getAmountPaid());
+            entry.put("paymentDue", totalThalis >= 30);
+            result.add(entry);
         }
-        return dueList;
+        return result;
+    }
+
+    @Transactional
+    public Map<String, Object> updateMealRecordThalis(Long recordId, int newThaliCount) {
+        MealRecord record = mealRecordRepository.findById(recordId)
+                .orElseThrow(() -> new StudentNotFoundException("Meal record not found with ID: " + recordId));
+        record.setThaliCount(newThaliCount);
+        record = mealRecordRepository.save(record);
+        return Map.of(
+                "recordId", record.getId(),
+                "studentName", record.getStudent().getName(),
+                "mealDate", record.getMealDate().toString(),
+                "mealType", record.getMealType().name(),
+                "thaliCount", record.getThaliCount()
+        );
     }
 
     private CheckInResponse toCheckInResponse(MealRecord record) {
