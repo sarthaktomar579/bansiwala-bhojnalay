@@ -83,9 +83,16 @@ export class ScanCheckin implements OnInit {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-IN';
-    utterance.rate = 0.95;
+    utterance.rate = 0.88;
     utterance.volume = 1.0;
-    utterance.pitch = 1.3;
+    utterance.pitch = 1.25;
+
+    // Repeat announcement once more for extra loudness in noisy environments
+    const repeat = new SpeechSynthesisUtterance(text);
+    repeat.lang = 'en-IN';
+    repeat.rate = 0.92;
+    repeat.volume = 1.0;
+    repeat.pitch = 1.25;
 
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(v =>
@@ -101,8 +108,12 @@ export class ScanCheckin implements OnInit {
       )
     ) || voices.find(v => v.lang.startsWith('en') && v.localService);
 
-    if (femaleVoice) utterance.voice = femaleVoice;
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+      repeat.voice = femaleVoice;
+    }
 
     window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.speak(repeat);
   }
 }

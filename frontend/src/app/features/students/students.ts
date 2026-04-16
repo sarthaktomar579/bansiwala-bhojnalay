@@ -73,6 +73,9 @@ export class Students implements OnInit {
   }
 
   toggleActive(student: Student): void {
+    const label = student.isActive ? 'Deactivate' : 'Activate';
+    if (!confirm(`Are you sure you want to ${label.toLowerCase()} "${student.name}"?`)) return;
+
     const action = student.isActive
       ? this.api.deactivateStudent(student.id)
       : this.api.activateStudent(student.id);
@@ -80,6 +83,10 @@ export class Students implements OnInit {
   }
 
   clearDue(studentId: number): void {
+    const student = this.students().find(s => s.id === studentId);
+    const name = student?.name || 'this member';
+    if (!confirm(`Clear payment due for "${name}"? This will move them back to the normal list.`)) return;
+
     this.api.clearPaymentDue(studentId).subscribe({
       next: () => {
         this.loadStudents();
@@ -101,6 +108,8 @@ export class Students implements OnInit {
   submitPayment(): void {
     const s = this.paymentStudent();
     if (!s || this.paymentAmount <= 0) return;
+    if (!confirm(`Record ₹${this.paymentAmount} payment for "${s.name}"?`)) return;
+
     this.api.recordPayment(s.id, this.paymentAmount).subscribe({
       next: () => {
         this.closePayment();

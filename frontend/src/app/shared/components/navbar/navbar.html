@@ -4,15 +4,18 @@
     <span class="brand-name">Bansiwala Bhojnalay</span>
   </div>
   @if (auth.isLoggedIn()) {
-    <div class="navbar-links">
+    <button class="menu-toggle" (click)="menuOpen = !menuOpen" [class.open]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="navbar-links" [class.show]="menuOpen">
       @if (auth.isAdmin()) {
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
-        <a routerLink="/check-in" routerLinkActive="active">Check In</a>
-        <a routerLink="/students" routerLinkActive="active">Members</a>
-        <a routerLink="/master-qr" routerLinkActive="active">Master QR</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen=false">Dashboard</a>
+        <a routerLink="/check-in" routerLinkActive="active" (click)="menuOpen=false">Check In</a>
+        <a routerLink="/students" routerLinkActive="active" (click)="menuOpen=false">Members</a>
+        <a routerLink="/master-qr" routerLinkActive="active" (click)="menuOpen=false">Master QR</a>
       } @else {
-        <a routerLink="/scan" routerLinkActive="active">Check In</a>
-        <a routerLink="/my-report" routerLinkActive="active">My Report</a>
+        <a routerLink="/scan" routerLinkActive="active" (click)="menuOpen=false">Check In</a>
+        <a routerLink="/my-report" routerLinkActive="active" (click)="menuOpen=false">My Report</a>
       }
       <span class="user-info">{{ auth.username() }}</span>
       <button class="btn btn-sm btn-outline logout-btn" (click)="logout()">Logout</button>

@@ -10,9 +10,12 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './navbar.scss',
 })
 export class Navbar {
+  menuOpen = false;
+
   constructor(public auth: AuthService) {}
 
   logout(): void {
+    this.menuOpen = false;
     this.auth.logout();
   }
 }

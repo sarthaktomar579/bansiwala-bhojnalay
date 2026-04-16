@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
@@ -11,13 +11,14 @@ import { DailyReport, CheckInResponse } from '../../core/models/meal.model';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, OnDestroy {
   report = signal<DailyReport | null>(null);
   recentCheckIns = signal<CheckInResponse[]>([]);
   loading = signal(true);
   today = new Date().toLocaleDateString('en-IN', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
+  private refreshTimer: any = null;
 
   constructor(
     private api: ApiService,
@@ -31,6 +32,14 @@ export class Dashboard implements OnInit {
       return;
     }
     this.loadDashboard();
+    this.refreshTimer = setInterval(() => this.refreshData(), 15000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+      this.refreshTimer = null;
+    }
   }
 
   loadDashboard(): void {
@@ -43,6 +52,15 @@ export class Dashboard implements OnInit {
       error: () => this.loading.set(false),
     });
 
+    this.api.getTodayRecords().subscribe({
+      next: (data) => this.recentCheckIns.set(data.slice(0, 10)),
+    });
+  }
+
+  private refreshData(): void {
+    this.api.getDailyReport().subscribe({
+      next: (data) => this.report.set(data),
+    });
     this.api.getTodayRecords().subscribe({
       next: (data) => this.recentCheckIns.set(data.slice(0, 10)),
     });

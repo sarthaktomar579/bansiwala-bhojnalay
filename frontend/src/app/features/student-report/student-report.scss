@@ -237,10 +237,50 @@
 }
 
 @media (max-width: 768px) {
-  .summary-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .month-nav {
+    gap: 12px;
+    h2 { font-size: 18px; min-width: 160px; }
   }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .summary-card {
+    padding: 16px;
+    .summary-value { font-size: 28px; }
+    .summary-label { font-size: 11px; }
+  }
+
+  .payment-info-card {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 20px;
+    text-align: center;
+    .payment-value { font-size: 26px; }
+  }
+
   .calendar-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .calendar-cell {
+    padding: 6px;
+    min-height: 60px;
+    border-radius: 8px;
+    .cell-date { font-size: 13px; margin-bottom: 4px; }
+  }
+
+  .meal-dot {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  .calendar-legend {
+    gap: 12px;
+    flex-wrap: wrap;
   }
 }

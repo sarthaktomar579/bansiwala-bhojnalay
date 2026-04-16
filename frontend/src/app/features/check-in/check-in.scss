@@ -140,3 +140,35 @@
   opacity: 0.6;
   &:hover { opacity: 1; }
 }
+
+@media (max-width: 768px) {
+  .check-in-card {
+    max-width: 100%;
+  }
+
+  .scan-section {
+    .scan-icon { font-size: 56px; }
+    h3 { font-size: 20px; }
+    .help-text { font-size: 13px; }
+  }
+
+  .form-group {
+    max-width: 100%;
+  }
+
+  .btn-lg {
+    max-width: 100%;
+    font-size: 15px;
+  }
+
+  .result-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+    padding: 20px;
+
+    .result-icon { font-size: 44px; }
+    .result-info h2 { font-size: 22px; }
+    .result-details { justify-content: center; flex-wrap: wrap; }
+  }
+}
