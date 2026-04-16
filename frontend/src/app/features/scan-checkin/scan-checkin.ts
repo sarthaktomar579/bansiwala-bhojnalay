@@ -31,6 +31,15 @@ export class ScanCheckin implements OnInit {
       return;
     }
     this.studentName = this.auth.username();
+    this.warmUpSpeech();
+  }
+
+  private warmUpSpeech(): void {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    const warmup = new SpeechSynthesisUtterance('');
+    warmup.volume = 0;
+    window.speechSynthesis.speak(warmup);
+    window.speechSynthesis.getVoices();
   }
 
   checkIn(): void {
@@ -70,9 +79,13 @@ export class ScanCheckin implements OnInit {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-IN';
-    utterance.rate = 0.9;
+    utterance.rate = 1.1;
     utterance.volume = 1.0;
     utterance.pitch = 1.0;
+
+    const voices = window.speechSynthesis.getVoices();
+    const indianVoice = voices.find(v => v.lang.startsWith('en') && v.localService);
+    if (indianVoice) utterance.voice = indianVoice;
 
     window.speechSynthesis.speak(utterance);
   }
