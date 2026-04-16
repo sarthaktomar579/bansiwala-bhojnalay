@@ -48,6 +48,54 @@
   </div>
 }
 
+<!-- Search Members -->
+<div class="card search-section">
+  <h2>🔍 Search Members</h2>
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Search by name or mobile number..."
+      class="search-input" />
+  </div>
+  @if (filteredMembers.length > 0) {
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Status</th>
+            <th>Paid (₹)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of filteredMembers; track m.id) {
+            <tr>
+              <td class="student-name">{{ m.name }}</td>
+              <td>{{ m.mobile }}</td>
+              <td>
+                <span class="badge" [class]="m.isActive ? 'active' : 'inactive'">
+                  {{ m.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>₹{{ m.amountPaid | number:'1.0-0' }}</td>
+              <td>
+                <a class="btn btn-sm btn-accent" [routerLink]="['/students', m.id, 'report']">Report</a>
+                <a class="btn btn-sm btn-outline" [routerLink]="['/students', m.id, 'edit']">Edit</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (searchQuery.trim() && filteredMembers.length === 0) {
+    <p class="no-results">No members found for "{{ searchQuery }}"</p>
+  }
+</div>
+
 <!-- Payment Due Members -->
 @if (paymentDue().length > 0) {
   <div class="card payment-due-section">
