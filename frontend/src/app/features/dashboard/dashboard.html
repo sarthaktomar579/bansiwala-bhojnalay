@@ -48,6 +48,39 @@
   </div>
 }
 
+<!-- Payment Due Members -->
+@if (paymentDue().length > 0) {
+  <div class="card payment-due-section">
+    <h2>⚠️ Payment Due Members (30+ thalis this month)</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Monthly Thalis</th>
+            <th>Amount Paid (₹)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of paymentDue(); track m.studentId) {
+            <tr>
+              <td class="student-name">{{ m.name }}</td>
+              <td>{{ m.mobile }}</td>
+              <td><span class="badge due">{{ m.monthlyThalis }} thalis</span></td>
+              <td>₹{{ m.amountPaid }}</td>
+              <td>
+                <a class="btn btn-sm btn-success" [routerLink]="['/students']">₹ Record Payment</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
 @if (recentCheckIns().length > 0) {
   <div class="card recent-section">
     <h2>Recent Check-Ins</h2>
@@ -55,7 +88,7 @@
       <table>
         <thead>
           <tr>
-            <th>Student</th>
+            <th>Member</th>
             <th>Meal</th>
             <th>Thalis</th>
             <th>Time</th>

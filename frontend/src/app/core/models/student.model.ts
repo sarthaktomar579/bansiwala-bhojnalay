@@ -6,6 +6,7 @@ export interface Student {
   qrCodeUuid: string;
   hasFingerprintRegistered: boolean;
   isActive: boolean;
+  amountPaid: number;
   createdAt: string;
 }
 

@@ -71,6 +71,14 @@ public class StudentController {
         return ResponseEntity.ok(studentService.registerFingerprint(id, template));
     }
 
+    @PatchMapping("/{id}/payment")
+    public ResponseEntity<StudentResponse> recordPayment(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> body) {
+        double amount = Double.parseDouble(body.get("amount").toString());
+        return ResponseEntity.ok(studentService.recordPayment(id, amount));
+    }
+
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
         studentService.deactivateStudent(id);

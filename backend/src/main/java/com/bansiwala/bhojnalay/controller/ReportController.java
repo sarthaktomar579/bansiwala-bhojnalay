@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,6 +34,15 @@ public class ReportController {
         }
         if (date == null) date = LocalDate.now();
         return ResponseEntity.ok(mealRecordService.getDailyReport(date));
+    }
+
+    @GetMapping("/payment-due")
+    public ResponseEntity<?> getPaymentDueMembers(Authentication auth) {
+        if (!auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Only admin can view this"));
+        }
+        return ResponseEntity.ok(mealRecordService.getPaymentDueMembers());
     }
 
     @GetMapping("/student/{studentId}/monthly")

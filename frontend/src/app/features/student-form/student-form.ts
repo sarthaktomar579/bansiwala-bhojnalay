@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
-import { FingerprintService } from '../../core/services/fingerprint.service';
 import { StudentRequest } from '../../core/models/student.model';
 
 @Component({
@@ -16,7 +15,6 @@ export class StudentForm implements OnInit {
   isEdit = signal(false);
   studentId = 0;
   saving = signal(false);
-  capturing = signal(false);
   error = signal('');
   success = signal('');
 
@@ -24,12 +22,10 @@ export class StudentForm implements OnInit {
     name: '',
     mobile: '',
     email: '',
-    fingerprintTemplate: '',
   };
 
   constructor(
     private api: ApiService,
-    public fpService: FingerprintService,
     private route: ActivatedRoute,
     public router: Router
   ) {}
@@ -44,34 +40,9 @@ export class StudentForm implements OnInit {
           this.form.name = s.name;
           this.form.mobile = s.mobile;
           this.form.email = s.email || '';
-          if (s.hasFingerprintRegistered) {
-            this.success.set('Fingerprint already registered');
-          }
         },
       });
     }
-  }
-
-  captureFingerprint(): void {
-    if (!this.form.name.trim()) {
-      this.error.set('Enter student name first');
-      return;
-    }
-    this.capturing.set(true);
-    this.error.set('');
-    this.success.set('');
-
-    this.fpService.captureForRegistration(this.form.name).subscribe({
-      next: (result) => {
-        this.capturing.set(false);
-        if (result.success) {
-          this.form.fingerprintTemplate = result.template;
-          this.success.set('Fingerprint captured successfully!');
-        } else {
-          this.error.set(result.error || 'Fingerprint capture failed');
-        }
-      },
-    });
   }
 
   onSubmit(): void {
@@ -83,18 +54,12 @@ export class StudentForm implements OnInit {
       return;
     }
 
-    if (!this.form.fingerprintTemplate && !this.isEdit()) {
-      this.error.set('Please capture fingerprint before registering');
-      return;
-    }
-
     this.saving.set(true);
 
     const request: StudentRequest = {
       name: this.form.name.trim(),
       mobile: this.form.mobile.trim(),
       email: this.form.email?.trim() || undefined,
-      fingerprintTemplate: this.form.fingerprintTemplate?.trim() || undefined,
     };
 
     const obs = this.isEdit()
@@ -108,7 +73,7 @@ export class StudentForm implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        const msg = err.error?.message || err.error?.details || 'Failed to save student';
+        const msg = err.error?.message || err.error?.details || 'Failed to save member';
         this.error.set(typeof msg === 'string' ? msg : JSON.stringify(msg));
       },
     });

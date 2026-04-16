@@ -14,6 +14,7 @@ import { DailyReport, CheckInResponse } from '../../core/models/meal.model';
 export class Dashboard implements OnInit {
   report = signal<DailyReport | null>(null);
   recentCheckIns = signal<CheckInResponse[]>([]);
+  paymentDue = signal<any[]>([]);
   loading = signal(true);
   today = new Date().toLocaleDateString('en-IN', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
@@ -45,6 +46,10 @@ export class Dashboard implements OnInit {
 
     this.api.getTodayRecords().subscribe({
       next: (data) => this.recentCheckIns.set(data.slice(0, 10)),
+    });
+
+    this.api.getPaymentDueMembers().subscribe({
+      next: (data) => this.paymentDue.set(data),
     });
   }
 

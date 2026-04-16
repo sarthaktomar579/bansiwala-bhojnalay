@@ -18,6 +18,7 @@ export class StudentReport implements OnInit {
   history = signal<StudentMealHistory | null>(null);
   loading = signal(true);
   calendarDays: CalendarDay[] = [];
+  amountPaid: number | null = null;
 
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -42,6 +43,7 @@ export class StudentReport implements OnInit {
       this.studentId = this.auth.studentId()!;
     }
     this.loadReport();
+    this.loadAmountPaid();
   }
 
   loadReport(): void {
@@ -53,6 +55,12 @@ export class StudentReport implements OnInit {
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
+    });
+  }
+
+  loadAmountPaid(): void {
+    this.api.getStudent(this.studentId).subscribe({
+      next: (s) => this.amountPaid = s.amountPaid,
     });
   }
 

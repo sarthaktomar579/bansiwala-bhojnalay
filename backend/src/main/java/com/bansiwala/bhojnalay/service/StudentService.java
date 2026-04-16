@@ -83,6 +83,14 @@ public class StudentService {
     }
 
     @Transactional
+    public StudentResponse recordPayment(Long id, double amount) {
+        Student student = findStudentOrThrow(id);
+        student.setAmountPaid(student.getAmountPaid() + amount);
+        student = studentRepository.save(student);
+        return StudentResponse.from(student);
+    }
+
+    @Transactional
     public void deactivateStudent(Long id) {
         Student student = findStudentOrThrow(id);
         student.setIsActive(false);

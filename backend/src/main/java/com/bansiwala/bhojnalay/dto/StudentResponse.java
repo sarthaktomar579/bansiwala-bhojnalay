@@ -12,6 +12,7 @@ public class StudentResponse {
     private UUID qrCodeUuid;
     private Boolean hasFingerprintRegistered;
     private Boolean isActive;
+    private double amountPaid;
     private LocalDateTime createdAt;
 
     public static StudentResponse from(Student student) {
@@ -24,6 +25,7 @@ public class StudentResponse {
         dto.setHasFingerprintRegistered(
             student.getFingerprintTemplate() != null && !student.getFingerprintTemplate().isBlank());
         dto.setIsActive(student.getIsActive());
+        dto.setAmountPaid(student.getAmountPaid());
         dto.setCreatedAt(student.getCreatedAt());
         return dto;
     }
@@ -48,6 +50,9 @@ public class StudentResponse {
 
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+
+    public double getAmountPaid() { return amountPaid; }
+    public void setAmountPaid(double amountPaid) { this.amountPaid = amountPaid; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

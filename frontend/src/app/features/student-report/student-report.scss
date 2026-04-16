@@ -74,6 +74,32 @@
   }
 }
 
+.payment-info-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  margin-bottom: 28px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.15), rgba(76, 175, 80, 0.08));
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  animation: fadeInUp 0.5s ease 0.25s backwards;
+
+  .payment-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .payment-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #66bb6a;
+  }
+}
+
 .calendar-legend {
   display: flex;
   gap: 24px;

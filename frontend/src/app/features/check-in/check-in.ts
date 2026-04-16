@@ -41,7 +41,7 @@ export class CheckIn implements OnInit {
 
   checkIn(): void {
     if (!this.selectedStudentId) {
-      this.error.set('Please select a student');
+      this.error.set('Please select a member');
       return;
     }
 

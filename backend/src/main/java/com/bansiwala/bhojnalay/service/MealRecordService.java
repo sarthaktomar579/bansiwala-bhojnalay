@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -163,6 +164,32 @@ public class MealRecordService {
                 records.stream().filter(r -> r.getMealType() == MealType.LUNCH).mapToInt(MealRecord::getThaliCount).sum(),
                 records.stream().filter(r -> r.getMealType() == MealType.DINNER).mapToInt(MealRecord::getThaliCount).sum()
         );
+    }
+
+    public List<Map<String, Object>> getPaymentDueMembers() {
+        LocalDate now = LocalDate.now();
+        YearMonth ym = YearMonth.from(now);
+        LocalDate start = ym.atDay(1);
+        LocalDate end = ym.atEndOfMonth();
+
+        List<Student> allActive = studentRepository.findByIsActiveTrue();
+        List<Map<String, Object>> dueList = new java.util.ArrayList<>();
+
+        for (Student s : allActive) {
+            List<MealRecord> records = mealRecordRepository
+                    .findByStudentIdAndMealDateBetweenOrderByMealDateAscMealTypeAsc(s.getId(), start, end);
+            int totalThalis = records.stream().mapToInt(MealRecord::getThaliCount).sum();
+            if (totalThalis >= 30) {
+                dueList.add(Map.of(
+                        "studentId", s.getId(),
+                        "name", s.getName(),
+                        "mobile", s.getMobile(),
+                        "monthlyThalis", totalThalis,
+                        "amountPaid", s.getAmountPaid()
+                ));
+            }
+        }
+        return dueList;
     }
 
     private CheckInResponse toCheckInResponse(MealRecord record) {

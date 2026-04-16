@@ -1,13 +1,13 @@
 <div class="page-header">
   <h1>
     @if (history(); as h) {
-      {{ h.studentName }} — Meal Report
+      {{ h.studentName }} — Thali Report
     } @else {
-      Student Report
+      Member Report
     }
   </h1>
   @if (auth.isAdmin()) {
-    <a class="btn btn-outline" routerLink="/students">Back to Students</a>
+    <a class="btn btn-outline" routerLink="/students">Back to Members</a>
   }
 </div>
 
@@ -25,21 +25,29 @@
   <div class="summary-grid">
     <div class="summary-card breakfast">
       <div class="summary-value">{{ h.totalBreakfast }}</div>
-      <div class="summary-label">Breakfasts</div>
+      <div class="summary-label">Breakfast Thalis</div>
     </div>
     <div class="summary-card lunch">
       <div class="summary-value">{{ h.totalLunch }}</div>
-      <div class="summary-label">Lunches</div>
+      <div class="summary-label">Lunch Thalis</div>
     </div>
     <div class="summary-card dinner">
       <div class="summary-value">{{ h.totalDinner }}</div>
-      <div class="summary-label">Dinners</div>
+      <div class="summary-label">Dinner Thalis</div>
     </div>
     <div class="summary-card total">
       <div class="summary-value">{{ h.totalBreakfast + h.totalLunch + h.totalDinner }}</div>
-      <div class="summary-label">Total Meals</div>
+      <div class="summary-label">Total Thalis</div>
     </div>
   </div>
+
+  <!-- Amount Paid -->
+  @if (amountPaid !== null) {
+    <div class="payment-info-card">
+      <div class="payment-label">Total Amount Paid</div>
+      <div class="payment-value">₹{{ amountPaid | number:'1.0-0' }}</div>
+    </div>
+  }
 
   <!-- Calendar Grid -->
   <div class="card">

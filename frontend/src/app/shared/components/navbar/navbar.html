@@ -8,7 +8,7 @@
       @if (auth.isAdmin()) {
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
         <a routerLink="/check-in" routerLinkActive="active">Check In</a>
-        <a routerLink="/students" routerLinkActive="active">Students</a>
+        <a routerLink="/students" routerLinkActive="active">Members</a>
         <a routerLink="/master-qr" routerLinkActive="active">Master QR</a>
       } @else {
         <a routerLink="/scan" routerLinkActive="active">Check In</a>

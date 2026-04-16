@@ -84,6 +84,17 @@ export class ApiService {
     });
   }
 
+  recordPayment(studentId: number, amount: number): Observable<Student> {
+    return this.http.patch<Student>(
+      `${this.baseUrl}/students/${studentId}/payment`,
+      { amount }
+    );
+  }
+
+  getPaymentDueMembers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/reports/payment-due`);
+  }
+
   // ─── Reports ──────────────────────────────────────
   getDailyReport(date?: string): Observable<DailyReport> {
     let params = new HttpParams();

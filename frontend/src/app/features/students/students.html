@@ -1,16 +1,16 @@
 <div class="page-header">
-  <h1>Students</h1>
-  <button class="btn btn-primary" routerLink="/students/new">+ Add Student</button>
+  <h1>Members</h1>
+  <button class="btn btn-primary" routerLink="/students/new">+ Add Member</button>
 </div>
 
 @if (loading()) {
-  <div class="loading">Loading students...</div>
+  <div class="loading">Loading members...</div>
 } @else if (students().length === 0) {
   <div class="card empty-state">
-    <div class="empty-icon">👨‍🎓</div>
-    <h3>No students registered</h3>
-    <p>Add your first student to get started</p>
-    <button class="btn btn-primary" routerLink="/students/new">Add Student</button>
+    <div class="empty-icon">🙏</div>
+    <h3>No members registered</h3>
+    <p>Add your first member to get started</p>
+    <button class="btn btn-primary" routerLink="/students/new">Add Member</button>
   </div>
 } @else {
   <div class="card">
@@ -21,8 +21,8 @@
             <th>#</th>
             <th>Name</th>
             <th>Mobile</th>
-            <th>Fingerprint</th>
             <th>Status</th>
+            <th>Paid (₹)</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -33,20 +33,15 @@
               <td class="student-name">{{ s.name }}</td>
               <td>{{ s.mobile }}</td>
               <td>
-                @if (s.hasFingerprintRegistered) {
-                  <span class="badge active">Registered</span>
-                } @else {
-                  <span class="badge inactive">Not Set</span>
-                }
-              </td>
-              <td>
                 <span class="badge" [class]="s.isActive ? 'active' : 'inactive'">
                   {{ s.isActive ? 'Active' : 'Inactive' }}
                 </span>
               </td>
+              <td>₹{{ s.amountPaid | number:'1.0-0' }}</td>
               <td class="actions">
                 <a class="btn btn-sm btn-accent" [routerLink]="['/students', s.id, 'report']">Report</a>
                 <a class="btn btn-sm btn-outline" [routerLink]="['/students', s.id, 'edit']">Edit</a>
+                <button class="btn btn-sm btn-success" (click)="openPayment(s)">₹ Pay</button>
                 <button
                   class="btn btn-sm"
                   [class]="s.isActive ? 'btn-danger' : 'btn-success'"
@@ -57,6 +52,26 @@
           }
         </tbody>
       </table>
+    </div>
+  </div>
+}
+
+<!-- Payment Modal -->
+@if (paymentStudent()) {
+  <div class="modal-overlay" (click)="closePayment()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3>Record Payment — {{ paymentStudent()!.name }}</h3>
+      <p class="modal-info">Current paid: ₹{{ paymentStudent()!.amountPaid | number:'1.0-0' }}</p>
+      <div class="form-group">
+        <label>Payment Amount (₹)</label>
+        <input type="number" [(ngModel)]="paymentAmount" placeholder="e.g. 500" min="1" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" (click)="closePayment()">Cancel</button>
+        <button class="btn btn-success" (click)="submitPayment()" [disabled]="paymentAmount <= 0">
+          ✅ Record ₹{{ paymentAmount }} Payment
+        </button>
+      </div>
     </div>
   </div>
 }

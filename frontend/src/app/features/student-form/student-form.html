@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>{{ isEdit() ? 'Edit Student' : 'Register New Student' }}</h1>
+  <h1>{{ isEdit() ? 'Edit Member' : 'Register New Member' }}</h1>
 </div>
 
 @if (error()) {
@@ -26,43 +26,10 @@
       <input type="email" [(ngModel)]="form.email" name="email" placeholder="e.g. rahul&#64;email.com" />
     </div>
 
-    <!-- Fingerprint Section -->
-    <div class="fingerprint-section">
-      <h3>👆 Fingerprint Registration *</h3>
-      <p class="help-text">
-        @if (fpService.isDummyMode()) {
-          Dummy mode is ON — click below to simulate fingerprint capture
-        } @else {
-          Place the student's thumb on the fingerprint scanner and click capture
-        }
-      </p>
-
-      <button
-        type="button"
-        class="btn btn-accent capture-btn"
-        (click)="captureFingerprint()"
-        [disabled]="capturing()">
-        @if (capturing()) {
-          <span class="scan-animation">Scanning...</span>
-        } @else if (form.fingerprintTemplate) {
-          Re-capture Fingerprint
-        } @else {
-          Capture Fingerprint
-        }
-      </button>
-
-      @if (form.fingerprintTemplate) {
-        <div class="fp-preview">
-          <span class="fp-status">✅ Fingerprint Captured</span>
-          <code>{{ form.fingerprintTemplate }}</code>
-        </div>
-      }
-    </div>
-
     <div class="form-actions">
       <button type="button" class="btn btn-outline" (click)="router.navigate(['/students'])">Cancel</button>
       <button type="submit" class="btn btn-primary" [disabled]="saving()">
-        {{ saving() ? 'Saving...' : (isEdit() ? 'Update Student' : 'Register Student') }}
+        {{ saving() ? 'Saving...' : (isEdit() ? 'Update Member' : 'Register Member') }}
       </button>
     </div>
   </form>

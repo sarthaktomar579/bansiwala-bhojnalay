@@ -15,7 +15,7 @@
       </div>
       <p class="result-message">{{ r.message }}</p>
     </div>
-    <button class="btn btn-outline" (click)="clearResult()">Next Student</button>
+    <button class="btn btn-outline" (click)="clearResult()">Next Member</button>
   </div>
 }
 
@@ -60,7 +60,7 @@
 
       @if (students().length === 0) {
         <div class="alert alert-info">
-          No active members. Go to Students → Add Student first.
+          No active members. Go to Members → Add Member first.
         </div>
       }
 

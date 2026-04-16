@@ -104,6 +104,25 @@
   }
 }
 
+.payment-due-section {
+  animation: fadeInUp 0.5s ease 0.2s backwards;
+  border: 1px solid rgba(255, 152, 0, 0.3) !important;
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #ffb74d;
+  }
+}
+
+.badge.due {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ffb74d;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
 .recent-section {
   animation: fadeInUp 0.5s ease 0.25s backwards;
 
