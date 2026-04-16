@@ -13,12 +13,6 @@ public class MealTimeService {
 
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
-    @Value("${meal.time.breakfast.start}")
-    private String breakfastStart;
-
-    @Value("${meal.time.breakfast.end}")
-    private String breakfastEnd;
-
     @Value("${meal.time.lunch.start}")
     private String lunchStart;
 
@@ -34,15 +28,12 @@ public class MealTimeService {
     public MealType detectCurrentMeal() {
         LocalTime now = LocalTime.now();
 
-        if (isWithin(now, breakfastStart, breakfastEnd)) return MealType.BREAKFAST;
         if (isWithin(now, lunchStart, lunchEnd)) return MealType.LUNCH;
         if (isWithin(now, dinnerStart, dinnerEnd)) return MealType.DINNER;
 
         throw new MealTimeException(
-            String.format("No meal is being served right now (%s). " +
-                "Breakfast: %s-%s, Lunch: %s-%s, Dinner: %s-%s",
+            String.format("No meal is being served right now (%s). Lunch: %s-%s, Dinner: %s-%s",
                 now.format(TIME_FMT),
-                breakfastStart, breakfastEnd,
                 lunchStart, lunchEnd,
                 dinnerStart, dinnerEnd));
     }

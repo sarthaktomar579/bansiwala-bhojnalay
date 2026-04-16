@@ -1,4 +1,4 @@
-export type MealType = 'BREAKFAST' | 'LUNCH' | 'DINNER';
+export type MealType = 'LUNCH' | 'DINNER';
 export type CheckInMethod = 'QR_SCAN' | 'FINGERPRINT' | 'MANUAL';
 
 export interface CheckInRequest {
@@ -23,11 +23,9 @@ export interface CheckInResponse {
 
 export interface DailyReport {
   date: string;
-  breakfastCount: number;
   lunchCount: number;
   dinnerCount: number;
   totalCheckIns: number;
-  breakfastThalis: number;
   lunchThalis: number;
   dinnerThalis: number;
   totalThalis: number;
@@ -48,7 +46,6 @@ export interface StudentMealHistory {
   year: number;
   month: number;
   meals: MealEntry[];
-  totalBreakfast: number;
   totalLunch: number;
   totalDinner: number;
 }

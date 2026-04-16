@@ -52,10 +52,6 @@
     border-color: rgba(255, 255, 255, 0.2);
   }
 
-  &.breakfast {
-    &::before { background: linear-gradient(90deg, #e65100, #ff833a); }
-    .stat-icon { background: rgba(230, 81, 0, 0.15); }
-  }
   &.lunch {
     &::before { background: linear-gradient(90deg, #2e7d32, #66bb6a); }
     .stat-icon { background: rgba(46, 125, 50, 0.15); }

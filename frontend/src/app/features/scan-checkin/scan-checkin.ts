@@ -17,6 +17,7 @@ export class ScanCheckin implements OnInit {
   error = signal<string>('');
   processing = signal(false);
   thaliCount = 1;
+  thaliOptions = Array.from({ length: 30 }, (_, i) => i + 1);
   studentName = '';
 
   constructor(

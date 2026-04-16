@@ -12,20 +12,18 @@ public class StudentMealHistory {
     private int year;
     private int month;
     private List<MealEntry> meals;
-    private long totalBreakfast;
     private long totalLunch;
     private long totalDinner;
 
     public StudentMealHistory() {}
 
     public StudentMealHistory(Long studentId, String studentName, int year, int month,
-                              List<MealEntry> meals, long totalBreakfast, long totalLunch, long totalDinner) {
+                              List<MealEntry> meals, long totalLunch, long totalDinner) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.year = year;
         this.month = month;
         this.meals = meals;
-        this.totalBreakfast = totalBreakfast;
         this.totalLunch = totalLunch;
         this.totalDinner = totalDinner;
     }
@@ -44,9 +42,6 @@ public class StudentMealHistory {
 
     public List<MealEntry> getMeals() { return meals; }
     public void setMeals(List<MealEntry> meals) { this.meals = meals; }
-
-    public long getTotalBreakfast() { return totalBreakfast; }
-    public void setTotalBreakfast(long totalBreakfast) { this.totalBreakfast = totalBreakfast; }
 
     public long getTotalLunch() { return totalLunch; }
     public void setTotalLunch(long totalLunch) { this.totalLunch = totalLunch; }

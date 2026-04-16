@@ -50,11 +50,9 @@
       <div class="form-group">
         <label>Number of Thalis</label>
         <select [(ngModel)]="thaliCount">
-          <option [ngValue]="1">1 Thali (self)</option>
-          <option [ngValue]="2">2 Thalis (+ 1 guest)</option>
-          <option [ngValue]="3">3 Thalis (+ 2 guests)</option>
-          <option [ngValue]="4">4 Thalis (+ 3 guests)</option>
-          <option [ngValue]="5">5 Thalis (+ 4 guests)</option>
+          @for (n of thaliOptions; track n) {
+            <option [ngValue]="n">{{ n }} Thali{{ n > 1 ? 's' : '' }}{{ n > 1 ? ' (+ ' + (n - 1) + ' guest' + (n > 2 ? 's' : '') + ')' : ' (self)' }}</option>
+          }
         </select>
       </div>
 

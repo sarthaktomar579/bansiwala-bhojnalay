@@ -19,6 +19,7 @@ export class CheckIn implements OnInit {
   students = signal<Student[]>([]);
   selectedStudentId: number | null = null;
   thaliCount = 1;
+  thaliOptions = Array.from({ length: 30 }, (_, i) => i + 1);
 
   constructor(private api: ApiService) {}
 

@@ -38,16 +38,11 @@
 
       <div class="thali-section">
         <label class="thali-label">How many thalis?</label>
-        <div class="thali-selector">
-          @for (n of [1, 2, 3, 4, 5]; track n) {
-            <button
-              class="thali-btn"
-              [class.active]="thaliCount === n"
-              (click)="thaliCount = n">
-              {{ n }}
-            </button>
+        <select class="thali-select" [(ngModel)]="thaliCount">
+          @for (n of thaliOptions; track n) {
+            <option [ngValue]="n">{{ n }} Thali{{ n > 1 ? 's' : '' }}</option>
           }
-        </div>
+        </select>
         @if (thaliCount > 1) {
           <p class="guest-hint">1 for you + {{ thaliCount - 1 }} guest{{ thaliCount > 2 ? 's' : '' }}</p>
         }

@@ -116,16 +116,14 @@ public class MealRecordService {
     }
 
     public DailyReportResponse getDailyReport(LocalDate date) {
-        long breakfast = mealRecordRepository.countByDateAndMealType(date, MealType.BREAKFAST);
         long lunch = mealRecordRepository.countByDateAndMealType(date, MealType.LUNCH);
         long dinner = mealRecordRepository.countByDateAndMealType(date, MealType.DINNER);
 
-        long bThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.BREAKFAST);
         long lThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.LUNCH);
         long dThalis = mealRecordRepository.sumThalisByDateAndMealType(date, MealType.DINNER);
 
-        return new DailyReportResponse(date, breakfast, lunch, dinner, breakfast + lunch + dinner,
-                bThalis, lThalis, dThalis, bThalis + lThalis + dThalis);
+        return new DailyReportResponse(date, lunch, dinner, lunch + dinner,
+                lThalis, dThalis, lThalis + dThalis);
     }
 
     public List<CheckInResponse> getTodayRecords(MealType mealType) {
@@ -160,7 +158,6 @@ public class MealRecordService {
         return new StudentMealHistory(
                 student.getId(), student.getName(),
                 year, month, meals,
-                records.stream().filter(r -> r.getMealType() == MealType.BREAKFAST).mapToInt(MealRecord::getThaliCount).sum(),
                 records.stream().filter(r -> r.getMealType() == MealType.LUNCH).mapToInt(MealRecord::getThaliCount).sum(),
                 records.stream().filter(r -> r.getMealType() == MealType.DINNER).mapToInt(MealRecord::getThaliCount).sum()
         );

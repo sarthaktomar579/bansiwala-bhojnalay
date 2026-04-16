@@ -120,10 +120,8 @@ export class StudentReport implements OnInit {
       this.calendarDays.push({
         day: d,
         date: dateStr,
-        breakfast: dayMeals.has('BREAKFAST'),
         lunch: dayMeals.has('LUNCH'),
         dinner: dayMeals.has('DINNER'),
-        breakfastThalis: dayData?.thalis['BREAKFAST'] || 0,
         lunchThalis: dayData?.thalis['LUNCH'] || 0,
         dinnerThalis: dayData?.thalis['DINNER'] || 0,
       });
@@ -134,10 +132,8 @@ export class StudentReport implements OnInit {
 interface CalendarDay {
   day: number;
   date: string;
-  breakfast: boolean;
   lunch: boolean;
   dinner: boolean;
-  breakfastThalis: number;
   lunchThalis: number;
   dinnerThalis: number;
 }

@@ -9,5 +9,5 @@ import { MealType } from '../../../core/models/meal.model';
   styleUrl: './meal-badge.scss',
 })
 export class MealBadge {
-  @Input() mealType: MealType = 'BREAKFAST';
+  @Input() mealType: MealType = 'LUNCH';
 }

@@ -23,10 +23,6 @@
 
   <!-- Summary Cards -->
   <div class="summary-grid">
-    <div class="summary-card breakfast">
-      <div class="summary-value">{{ h.totalBreakfast }}</div>
-      <div class="summary-label">Breakfast Thalis</div>
-    </div>
     <div class="summary-card lunch">
       <div class="summary-value">{{ h.totalLunch }}</div>
       <div class="summary-label">Lunch Thalis</div>
@@ -36,7 +32,7 @@
       <div class="summary-label">Dinner Thalis</div>
     </div>
     <div class="summary-card total">
-      <div class="summary-value">{{ h.totalBreakfast + h.totalLunch + h.totalDinner }}</div>
+      <div class="summary-value">{{ h.totalLunch + h.totalDinner }}</div>
       <div class="summary-label">Total Thalis</div>
     </div>
   </div>
@@ -96,19 +92,15 @@
   <!-- Calendar Grid -->
   <div class="card">
     <div class="calendar-legend">
-      <span class="legend-item"><span class="dot breakfast-dot"></span> Breakfast</span>
       <span class="legend-item"><span class="dot lunch-dot"></span> Lunch</span>
       <span class="legend-item"><span class="dot dinner-dot"></span> Dinner</span>
     </div>
 
     <div class="calendar-grid">
       @for (day of calendarDays; track day.day) {
-        <div class="calendar-cell" [class.has-meals]="day.breakfast || day.lunch || day.dinner">
+        <div class="calendar-cell" [class.has-meals]="day.lunch || day.dinner">
           <div class="cell-date">{{ day.day }}</div>
           <div class="cell-meals">
-            @if (day.breakfast) {
-              <span class="meal-dot breakfast-dot" title="Breakfast">B{{ day.breakfastThalis > 1 ? '×' + day.breakfastThalis : '' }}</span>
-            }
             @if (day.lunch) {
               <span class="meal-dot lunch-dot" title="Lunch">L{{ day.lunchThalis > 1 ? '×' + day.lunchThalis : '' }}</span>
             }
@@ -116,7 +108,7 @@
               <span class="meal-dot dinner-dot" title="Dinner">D{{ day.dinnerThalis > 1 ? '×' + day.dinnerThalis : '' }}</span>
             }
           </div>
-          @if (!day.breakfast && !day.lunch && !day.dinner) {
+          @if (!day.lunch && !day.dinner) {
             <div class="cell-empty">—</div>
           }
         </div>

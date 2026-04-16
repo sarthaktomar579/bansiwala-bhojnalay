@@ -218,7 +218,6 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.8px;
 
-  &.breakfast { background: rgba(230, 81, 0, 0.2); color: #ff9e40; border: 1px solid rgba(230, 81, 0, 0.3); }
   &.lunch { background: rgba(46, 125, 50, 0.2); color: #81c784; border: 1px solid rgba(46, 125, 50, 0.3); }
   &.dinner { background: rgba(21, 101, 192, 0.2); color: #64b5f6; border: 1px solid rgba(21, 101, 192, 0.3); }
   &.active { background: rgba(46, 125, 50, 0.2); color: #81c784; border: 1px solid rgba(46, 125, 50, 0.3); }
