@@ -13,14 +13,17 @@ import { Student } from '../../core/models/student.model';
 })
 export class Students implements OnInit {
   students = signal<Student[]>([]);
+  paymentDue = signal<any[]>([]);
   loading = signal(true);
   paymentStudent = signal<Student | null>(null);
   paymentAmount = 0;
+  searchQuery = '';
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
     this.loadStudents();
+    this.loadPaymentDue();
   }
 
   loadStudents(): void {
@@ -34,11 +37,30 @@ export class Students implements OnInit {
     });
   }
 
+  loadPaymentDue(): void {
+    this.api.getPaymentDueMembers().subscribe({
+      next: (data) => this.paymentDue.set(data),
+    });
+  }
+
+  get filteredStudents(): Student[] {
+    const q = this.searchQuery.trim().toLowerCase();
+    if (!q) return this.students();
+    return this.students().filter(
+      m => m.name.toLowerCase().includes(q) || m.mobile.includes(q)
+    );
+  }
+
   toggleActive(student: Student): void {
     const action = student.isActive
       ? this.api.deactivateStudent(student.id)
       : this.api.activateStudent(student.id);
     action.subscribe({ next: () => this.loadStudents() });
+  }
+
+  openPaymentById(studentId: number, name: string, amountPaid: number): void {
+    this.paymentStudent.set({ id: studentId, name, amountPaid } as Student);
+    this.paymentAmount = 0;
   }
 
   openPayment(student: Student): void {
@@ -58,6 +80,7 @@ export class Students implements OnInit {
       next: () => {
         this.closePayment();
         this.loadStudents();
+        this.loadPaymentDue();
       },
     });
   }
