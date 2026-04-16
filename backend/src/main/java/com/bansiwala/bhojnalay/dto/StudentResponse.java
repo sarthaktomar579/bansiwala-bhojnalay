@@ -13,6 +13,7 @@ public class StudentResponse {
     private Boolean hasFingerprintRegistered;
     private Boolean isActive;
     private double amountPaid;
+    private boolean paymentCleared;
     private LocalDateTime createdAt;
 
     public static StudentResponse from(Student student) {
@@ -26,6 +27,7 @@ public class StudentResponse {
             student.getFingerprintTemplate() != null && !student.getFingerprintTemplate().isBlank());
         dto.setIsActive(student.getIsActive());
         dto.setAmountPaid(student.getAmountPaid());
+        dto.setPaymentCleared(student.isPaymentCleared());
         dto.setCreatedAt(student.getCreatedAt());
         return dto;
     }
@@ -53,6 +55,9 @@ public class StudentResponse {
 
     public double getAmountPaid() { return amountPaid; }
     public void setAmountPaid(double amountPaid) { this.amountPaid = amountPaid; }
+
+    public boolean isPaymentCleared() { return paymentCleared; }
+    public void setPaymentCleared(boolean paymentCleared) { this.paymentCleared = paymentCleared; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

@@ -84,6 +84,13 @@ export class ApiService {
     });
   }
 
+  clearPaymentDue(studentId: number): Observable<Student> {
+    return this.http.patch<Student>(
+      `${this.baseUrl}/students/${studentId}/clear-due`,
+      {}
+    );
+  }
+
   recordPayment(studentId: number, amount: number): Observable<Student> {
     return this.http.patch<Student>(
       `${this.baseUrl}/students/${studentId}/payment`,

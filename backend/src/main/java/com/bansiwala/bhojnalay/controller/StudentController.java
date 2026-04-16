@@ -79,6 +79,11 @@ public class StudentController {
         return ResponseEntity.ok(studentService.recordPayment(id, amount));
     }
 
+    @PatchMapping("/{id}/clear-due")
+    public ResponseEntity<StudentResponse> clearPaymentDue(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.clearPaymentDue(id));
+    }
+
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
         studentService.deactivateStudent(id);

@@ -1,6 +1,14 @@
 <div class="page-header">
   <h1>Members</h1>
-  <button class="btn btn-primary" routerLink="/students/new">+ Add Member</button>
+  <div class="header-btns">
+    <button
+      class="btn btn-danger"
+      [class.active-filter]="showDueOnly"
+      (click)="toggleDueFilter()">
+      ⚠️ Payment Due ({{ dueCount }})
+    </button>
+    <button class="btn btn-primary" routerLink="/students/new">+ Add Member</button>
+  </div>
 </div>
 
 <!-- Search Bar -->
@@ -10,55 +18,6 @@
     [(ngModel)]="searchQuery"
     placeholder="🔍 Search by name or mobile number..."
     class="search-input" />
-</div>
-
-<!-- Payment Due / Monthly Thalis Section -->
-<div class="card payment-due-section">
-  <h2>⚠️ Monthly Thalis &amp; Payment Status</h2>
-  @if (memberThalis().length === 0) {
-    <p class="empty-msg">No active members yet</p>
-  } @else {
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Mobile</th>
-            <th>Monthly Thalis</th>
-            <th>Paid (₹)</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (m of memberThalis(); track m.studentId) {
-            <tr [class.due-row]="m.paymentDue">
-              <td class="student-name">{{ m.name }}</td>
-              <td>{{ m.mobile }}</td>
-              <td>
-                @if (m.paymentDue) {
-                  <span class="badge due">{{ m.monthlyThalis }} thalis</span>
-                } @else {
-                  <span>{{ m.monthlyThalis }} thalis</span>
-                }
-              </td>
-              <td>₹{{ m.amountPaid | number:'1.0-0' }}</td>
-              <td>
-                @if (m.paymentDue) {
-                  <span class="badge due">Payment Due</span>
-                } @else {
-                  <span class="badge active">Normal</span>
-                }
-              </td>
-              <td>
-                <button class="btn btn-sm btn-success" (click)="openPaymentById(m.studentId, m.name, m.amountPaid)">₹ Pay</button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  }
 </div>
 
 <!-- Members List -->
@@ -73,8 +32,12 @@
   </div>
 } @else {
   <div class="card">
-    @if (searchQuery.trim() && filteredStudents.length === 0) {
-      <p class="no-results">No members found for "{{ searchQuery }}"</p>
+    @if (displayedMembers.length === 0) {
+      @if (showDueOnly) {
+        <p class="no-results">No payment due members right now 🎉</p>
+      } @else {
+        <p class="no-results">No members found for "{{ searchQuery }}"</p>
+      }
     } @else {
       <div class="table-container">
         <table>
@@ -89,10 +52,15 @@
             </tr>
           </thead>
           <tbody>
-            @for (s of filteredStudents; track s.id; let i = $index) {
-              <tr>
+            @for (s of displayedMembers; track s.id; let i = $index) {
+              <tr [class.due-row]="isDue(s.id)">
                 <td>{{ i + 1 }}</td>
-                <td class="student-name">{{ s.name }}</td>
+                <td class="student-name">
+                  {{ s.name }}
+                  @if (isDue(s.id)) {
+                    <span class="badge due">Due</span>
+                  }
+                </td>
                 <td>{{ s.mobile }}</td>
                 <td>
                   <span class="badge" [class]="s.isActive ? 'active' : 'inactive'">
@@ -104,6 +72,9 @@
                   <a class="btn btn-sm btn-accent" [routerLink]="['/students', s.id, 'report']">Report</a>
                   <a class="btn btn-sm btn-outline" [routerLink]="['/students', s.id, 'edit']">Edit</a>
                   <button class="btn btn-sm btn-success" (click)="openPayment(s)">₹ Pay</button>
+                  @if (isDue(s.id)) {
+                    <button class="btn btn-sm btn-primary" (click)="clearDue(s.id)">✅ Clear Due</button>
+                  }
                   <button
                     class="btn btn-sm"
                     [class]="s.isActive ? 'btn-danger' : 'btn-success'"

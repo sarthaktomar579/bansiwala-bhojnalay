@@ -31,16 +31,22 @@
   font-size: 15px;
 }
 
-.payment-due-section {
-  animation: fadeInUp 0.5s ease;
-  border: 1px solid rgba(255, 152, 0, 0.3) !important;
-  margin-bottom: 20px;
+.header-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
-  h2 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #ffb74d;
+.btn-danger {
+  background: rgba(211, 47, 47, 0.15);
+  color: #ef5350;
+  border: 1px solid rgba(211, 47, 47, 0.3);
+
+  &:hover, &.active-filter {
+    background: #d32f2f;
+    color: #fff;
+    border-color: #d32f2f;
+    box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
   }
 }
 

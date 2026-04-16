@@ -185,7 +185,7 @@ public class MealRecordService {
             entry.put("mobile", s.getMobile());
             entry.put("monthlyThalis", totalThalis);
             entry.put("amountPaid", s.getAmountPaid());
-            entry.put("paymentDue", totalThalis >= 30);
+            entry.put("paymentDue", totalThalis >= 30 && !s.isPaymentCleared());
             result.add(entry);
         }
         return result;

@@ -13,17 +13,18 @@ import { Student } from '../../core/models/student.model';
 })
 export class Students implements OnInit {
   students = signal<Student[]>([]);
-  memberThalis = signal<any[]>([]);
+  dueIds = signal<Set<number>>(new Set());
   loading = signal(true);
   paymentStudent = signal<Student | null>(null);
   paymentAmount = 0;
   searchQuery = '';
+  showDueOnly = false;
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
     this.loadStudents();
-    this.loadMemberThalis();
+    this.loadDueMembers();
   }
 
   loadStudents(): void {
@@ -37,18 +38,38 @@ export class Students implements OnInit {
     });
   }
 
-  loadMemberThalis(): void {
+  loadDueMembers(): void {
     this.api.getPaymentDueMembers().subscribe({
-      next: (data) => this.memberThalis.set(data),
+      next: (data) => {
+        const ids = new Set<number>();
+        data.filter((m: any) => m.paymentDue).forEach((m: any) => ids.add(m.studentId));
+        this.dueIds.set(ids);
+      },
     });
   }
 
-  get filteredStudents(): Student[] {
+  get dueCount(): number {
+    return this.dueIds().size;
+  }
+
+  isDue(id: number): boolean {
+    return this.dueIds().has(id);
+  }
+
+  toggleDueFilter(): void {
+    this.showDueOnly = !this.showDueOnly;
+  }
+
+  get displayedMembers(): Student[] {
+    let list = this.students();
     const q = this.searchQuery.trim().toLowerCase();
-    if (!q) return this.students();
-    return this.students().filter(
-      m => m.name.toLowerCase().includes(q) || m.mobile.includes(q)
-    );
+    if (q) {
+      list = list.filter(m => m.name.toLowerCase().includes(q) || m.mobile.includes(q));
+    }
+    if (this.showDueOnly) {
+      list = list.filter(m => this.isDue(m.id));
+    }
+    return list;
   }
 
   toggleActive(student: Student): void {
@@ -58,9 +79,13 @@ export class Students implements OnInit {
     action.subscribe({ next: () => this.loadStudents() });
   }
 
-  openPaymentById(studentId: number, name: string, amountPaid: number): void {
-    this.paymentStudent.set({ id: studentId, name, amountPaid } as Student);
-    this.paymentAmount = 0;
+  clearDue(studentId: number): void {
+    this.api.clearPaymentDue(studentId).subscribe({
+      next: () => {
+        this.loadStudents();
+        this.loadDueMembers();
+      },
+    });
   }
 
   openPayment(student: Student): void {
@@ -80,7 +105,7 @@ export class Students implements OnInit {
       next: () => {
         this.closePayment();
         this.loadStudents();
-        this.loadMemberThalis();
+        this.loadDueMembers();
       },
     });
   }

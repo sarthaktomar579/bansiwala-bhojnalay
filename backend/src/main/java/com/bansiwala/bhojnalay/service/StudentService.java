@@ -91,6 +91,14 @@ public class StudentService {
     }
 
     @Transactional
+    public StudentResponse clearPaymentDue(Long id) {
+        Student student = findStudentOrThrow(id);
+        student.setPaymentCleared(true);
+        student = studentRepository.save(student);
+        return StudentResponse.from(student);
+    }
+
+    @Transactional
     public void deactivateStudent(Long id) {
         Student student = findStudentOrThrow(id);
         student.setIsActive(false);

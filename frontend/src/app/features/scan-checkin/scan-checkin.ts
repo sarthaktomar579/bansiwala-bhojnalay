@@ -75,17 +75,32 @@ export class ScanCheckin implements OnInit {
     window.speechSynthesis.cancel();
 
     const count = this.thaliCount;
-    const text = `Check-in done for ${count} thali by ${res.studentName}. Jai Shree Krishna.`;
+    const name = res.studentName;
+    const text = count > 1
+      ? `Welcome ${name}. Your check-in for ${count} thalis is confirmed. Thank you. Jai Shree Krishna.`
+      : `Welcome ${name}. Your check-in is confirmed. Thank you. Jai Shree Krishna.`;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-IN';
-    utterance.rate = 1.1;
+    utterance.rate = 0.95;
     utterance.volume = 1.0;
-    utterance.pitch = 1.0;
+    utterance.pitch = 1.3;
 
     const voices = window.speechSynthesis.getVoices();
-    const indianVoice = voices.find(v => v.lang.startsWith('en') && v.localService);
-    if (indianVoice) utterance.voice = indianVoice;
+    const femaleVoice = voices.find(v =>
+      v.lang.startsWith('en') && v.name.toLowerCase().includes('female')
+    ) || voices.find(v =>
+      v.lang.startsWith('en') && (
+        v.name.toLowerCase().includes('zira') ||
+        v.name.toLowerCase().includes('hazel') ||
+        v.name.toLowerCase().includes('susan') ||
+        v.name.toLowerCase().includes('samantha') ||
+        v.name.toLowerCase().includes('victoria') ||
+        v.name.toLowerCase().includes('karen')
+      )
+    ) || voices.find(v => v.lang.startsWith('en') && v.localService);
+
+    if (femaleVoice) utterance.voice = femaleVoice;
 
     window.speechSynthesis.speak(utterance);
   }
