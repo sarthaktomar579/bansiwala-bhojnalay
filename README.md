@@ -1,125 +1,134 @@
-# Bansiwala Bhojnalay - Mess Meal Tracker
+# Bansiwala Bhojnalay - Meal Tracker
 
-A complete meal tracking system for student mess in Indore. Supports **QR code scanning**, **fingerprint authentication** (with dummy testing mode), and **manual check-in**.
+A full-stack meal tracking system for **Bansiwala Bhojnalay, Indore**.  
+Members can check in for Lunch/Dinner, admin can manage members, payments, and reports.
+
+## Live URLs
+
+- **Frontend (Vercel):** https://bansiwala-bhojnalay.vercel.app/
+- **Backend (Render):** https://bansiwala-bhojnalay.onrender.com/
+- **Database:** Neon Cloud PostgreSQL (no local DB needed)
 
 ## Tech Stack
 
-| Layer       | Technology               |
-|-------------|--------------------------|
-| Backend     | Java 17 + Spring Boot 3  |
-| Frontend    | Angular 19               |
-| Database    | PostgreSQL               |
-| QR Code     | ZXing (Google)           |
-| Fingerprint | Pluggable SDK (Mantra MFS100 ready) |
+| Layer      | Technology                   |
+|------------|------------------------------|
+| Frontend   | Angular 19+, TypeScript      |
+| Backend    | Java 17+, Spring Boot 3.4    |
+| Database   | PostgreSQL (Neon Cloud)      |
+| Auth       | JWT (Spring Security)        |
+| Deployment | Vercel (FE), Render (BE)     |
+
+## Admin Login
+
+- **Username:** `admin`
+- **Password:** `bansiwala2026`
+
+---
+
+## Setup on a New Laptop (Windows)
+
+### Prerequisites — Install These First
+
+1. **Java 17+** (Temurin recommended)
+   - Download: https://adoptium.net/temurin/releases/
+   - Pick **Windows x64** → `.msi` installer
+   - During install, check **"Set JAVA_HOME"** and **"Add to PATH"**
+
+2. **Node.js 18+**
+   - Download: https://nodejs.org/ (pick LTS version)
+   - Install with default settings
+
+3. **Git** (optional, for cloning from GitHub)
+   - Download: https://git-scm.com/downloads/win
+
+### Option A: Clone from GitHub (Recommended)
+
+```
+git clone https://github.com/sarthaktomar579/bansiwala-bhojnalay.git
+cd bansiwala-bhojnalay
+```
+
+### Option B: Use the ZIP file
+
+1. Copy the `Bansiwala_Bhojnalay_Records.zip` file to the new laptop
+2. Extract/unzip it to any folder
+3. Open terminal in that folder
+
+### Quick Start (3 Steps)
+
+**Step 1:** Run setup (first time only — installs all dependencies)
+```
+setup.bat
+```
+
+**Step 2:** Start backend (keep this terminal open)
+```
+start-backend.bat
+```
+
+**Step 3:** Open a NEW terminal, start frontend
+```
+start-frontend.bat
+```
+
+The app opens at **http://localhost:4200**
+
+---
+
+## Manual Setup (if batch scripts don't work)
+
+### Backend
+
+```bash
+cd backend
+.\mvnw.cmd spring-boot:run
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npx ng serve --open
+```
+
+---
 
 ## Project Structure
 
 ```
 Bansiwala_Bhojnalay_Records/
-├── backend/              ← Spring Boot API
-│   ├── src/main/java/com/bansiwala/bhojnalay/
-│   │   ├── controller/   ← REST APIs
-│   │   ├── service/      ← Business logic
-│   │   ├── repository/   ← Database queries
-│   │   ├── entity/       ← JPA entities
-│   │   ├── dto/          ← Request/Response objects
-│   │   ├── enums/        ← MealType, CheckInMethod
-│   │   ├── exception/    ← Error handling
-│   │   └── config/       ← CORS config
-│   └── pom.xml
-├── frontend/             ← Angular UI
-│   └── src/app/
-│       ├── features/     ← Pages (Dashboard, Check-in, Students, Reports)
-│       ├── core/         ← Services, Models
-│       └── shared/       ← Reusable components
-└── README.md
+├── backend/                    # Java Spring Boot API
+│   ├── src/main/java/          # Java source code
+│   ├── src/main/resources/     # application.properties
+│   ├── pom.xml                 # Maven dependencies
+│   ├── mvnw.cmd                # Maven wrapper (no install needed)
+│   └── Dockerfile              # For cloud deployment
+├── frontend/                   # Angular SPA
+│   ├── src/app/                # Angular components & services
+│   ├── package.json            # npm dependencies
+│   └── vercel.json             # Vercel deployment config
+├── setup.bat                   # First-time setup script
+├── start-backend.bat           # Start backend server
+├── start-frontend.bat          # Start frontend dev server
+└── README.md                   # This file
 ```
 
-## Prerequisites
+## Features
 
-1. **Java 17+** — Download from https://adoptium.net/
-2. **PostgreSQL** — Download from https://www.postgresql.org/download/
-3. **Node.js 18+** — Already installed
+- Manual check-in (admin) & QR scan check-in (members)
+- Lunch & Dinner tracking with thali count (1-30)
+- Monthly calendar report per member
+- Payment tracking with repeating 30-thali due cycles
+- Voice confirmation on QR check-in
+- Role-based access (Admin / Member)
+- Mobile responsive design
+- Auto-refreshing dashboard (every 15 seconds)
 
-## Setup
+## Important Notes
 
-### 1. Database Setup
-
-Open pgAdmin or psql and create the database:
-
-```sql
-CREATE DATABASE bansiwala_bhojnalay;
-```
-
-Update credentials in `backend/src/main/resources/application.properties` if needed:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/bansiwala_bhojnalay
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-```
-
-### 2. Backend Setup
-
-```bash
-cd backend
-
-# On Windows (PowerShell)
-./mvnw.cmd spring-boot:run
-
-# Or if you have Maven installed
-mvn spring-boot:run
-```
-
-Backend starts at **http://localhost:8080**
-
-### 3. Frontend Setup
-
-```bash
-cd frontend
-npm install        # (already done)
-ng serve
-```
-
-Frontend starts at **http://localhost:4200**
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/students` | Register student |
-| GET | `/api/students` | List all students |
-| GET | `/api/students/{id}` | Get student by ID |
-| PUT | `/api/students/{id}` | Update student |
-| GET | `/api/students/{id}/qr` | Download QR code PNG |
-| PATCH | `/api/students/{id}/fingerprint` | Register fingerprint |
-| POST | `/api/meals/check-in/qr` | Check-in via QR |
-| POST | `/api/meals/check-in/fingerprint` | Check-in via fingerprint |
-| POST | `/api/meals/check-in/manual/{id}` | Manual check-in |
-| GET | `/api/meals/today` | Today's records |
-| GET | `/api/reports/daily` | Daily summary |
-| GET | `/api/reports/student/{id}/monthly` | Monthly report |
-
-## Fingerprint Scanner Integration
-
-The system has two modes:
-
-### Dummy Mode (Default — for testing without hardware)
-- Toggle "Dummy Mode" on the Check-In page
-- Select a test student from dropdown
-- Pre-configured dummy templates are matched against the database
-
-### Real Device Mode (when you have the scanner)
-- Edit `frontend/src/app/core/services/fingerprint.service.ts`
-- Uncomment the real device code in the `captureReal()` method
-- Configure your device URL (e.g., Mantra MFS100 runs at `https://localhost:11100`)
-
-## Meal Time Windows
-
-Configured in `application.properties`:
-
-| Meal | Time Window |
-|------|-------------|
-| Breakfast | 07:00 - 10:30 |
-| Lunch | 11:00 - 15:30 |
-| Dinner | 18:00 - 22:00 |
+- The database is hosted on **Neon Cloud** — no local PostgreSQL needed
+- Your internet connection must be active for the app to work (it connects to Neon)
+- If your WiFi blocks database connections, use a **mobile hotspot**
+- Backend runs on port **8080**, frontend on port **4200**
