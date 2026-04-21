@@ -2,7 +2,7 @@ node_modules/
 dist/
 target/
 .idea/
-.vscode/
 *.class
 .DS_Store
 Thumbs.db
+config.bat
